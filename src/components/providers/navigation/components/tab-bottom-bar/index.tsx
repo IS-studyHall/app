@@ -24,7 +24,7 @@ import theme from '../../../theme/defaultTheme';
 };*/
 const screens = ['Home', 'Settings'];
 
-const MyTabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
+const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
   const {sizes, colors} = theme;
 
   const styles = StyleSheet.create({
@@ -80,4 +80,4 @@ const MyTabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
   );
 };
 
-export default MyTabBar;
+export default TabBar;

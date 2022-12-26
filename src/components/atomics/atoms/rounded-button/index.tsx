@@ -7,8 +7,15 @@ interface ButtonProps {
   onPress: () => void;
   status?: 'default' | 'secondary';
   style?: ViewStyle;
+  size?: 'big' | 'small';
 }
-const Button: React.FC<ButtonProps> = ({title, onPress, status, style}) => {
+const RoundedButton: React.FC<ButtonProps> = ({
+  title,
+  onPress,
+  status,
+  size,
+  style,
+}) => {
   const {sizes, colors} = theme;
   const buttonColor = React.useMemo(() => {
     switch (status) {
@@ -18,23 +25,35 @@ const Button: React.FC<ButtonProps> = ({title, onPress, status, style}) => {
         return colors.primary.main;
     }
   }, [colors.primary.main, colors.secondary.main, status]);
+  const buttonSize = React.useMemo(() => {
+    switch (size) {
+      default:
+        return {
+          width: 60,
+          height: 60,
+          borderRadius: sizes.borderRadius.extraBig,
+        };
+    }
+  }, [size, sizes.borderRadius.extraBig]);
   const styles = StyleSheet.create({
     wrapper: {
       flexDirection: 'row',
       justifyContent: 'center',
-      paddingVertical: sizes.spacings.s,
+      alignItems: 'center',
       backgroundColor: buttonColor,
-      borderRadius: sizes.borderRadius.extraBig,
+    },
+    text: {
+      fontSize: 30,
     },
   });
   return (
     <Pressable onPress={onPress}>
-      <View style={[styles.wrapper, style]}>
-        <Text type="p1" color="light">
+      <View style={[styles.wrapper, buttonSize, style]}>
+        <Text style={styles.text} type="p1" color="light">
           {title}
         </Text>
       </View>
     </Pressable>
   );
 };
-export default Button;
+export default RoundedButton;

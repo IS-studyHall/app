@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {Image, StyleSheet, View, ViewStyle} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Text from '../../../../components/atomics/atoms/text';
-import theme from '../../../../components/providers/theme/defaultTheme';
+import Text from '../../../../../components/atomics/atoms/text';
+import theme from '../../../../../components/providers/theme/defaultTheme';
 interface StudyroomProps {
   name: string;
   image: string;
   style: ViewStyle;
 }
 const Studyroom: React.FC<StudyroomProps> = ({name, image, style}) => {
-  const {sizes} = theme;
+  const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     wrapper: {
       width: 300,
@@ -29,7 +29,7 @@ const Studyroom: React.FC<StudyroomProps> = ({name, image, style}) => {
     },
     linearGradient: {
       position: 'absolute',
-      height: '100%',
+      height: '60%',
       width: '100%',
       bottom: 0,
     },
@@ -41,7 +41,7 @@ const Studyroom: React.FC<StudyroomProps> = ({name, image, style}) => {
         style={styles.linearGradient}
         start={{x: 0, y: 0}}
         end={{x: 0, y: 1}}
-        colors={['transparent', '#192f6a']}
+        colors={['transparent', colors.secondary.main ?? '']}
       />
       <Text style={styles.text} type={'h3'}>
         {name}

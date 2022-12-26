@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import theme from '../../../providers/theme/defaultTheme';
 interface CardProps {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
   onPress?: () => void;
 }
 const Card: React.FC<CardProps> = ({children, onPress}) => {

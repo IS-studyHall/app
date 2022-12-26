@@ -4,7 +4,7 @@ import theme from '../../../providers/theme/defaultTheme';
 interface TextProps {
   children: string;
   type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p1' | 'p2';
-  color?: 'title' | 'danger' | 'light' | 'hint';
+  color?: 'title' | 'danger' | 'light' | 'hint' | 'secondary';
   style?: any;
 }
 const Text: React.FC<TextProps> = ({
@@ -51,10 +51,18 @@ const Text: React.FC<TextProps> = ({
         return 'red';
       case 'hint':
         return colors.divider;
+      case 'secondary':
+        return colors.secondary.main;
       default:
         return colors.base.black;
     }
-  }, [color, colors.base.black, colors.base.white, colors.divider]);
+  }, [
+    color,
+    colors.base.black,
+    colors.base.white,
+    colors.divider,
+    colors.secondary.main,
+  ]);
   const styles = StyleSheet.create({
     text: {
       fontSize: textStyle?.size,

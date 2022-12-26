@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import Text from '../../components/atomics/atoms/text';
-import theme from '../../components/providers/theme/defaultTheme';
+import Text from '../../../components/atomics/atoms/text';
+import theme from '../../../components/providers/theme/defaultTheme';
 import Studyroom from './components/studyroom';
 import {content} from './data';
 interface RenderBuilding {
@@ -41,7 +41,7 @@ const HomeScreen = (): JSX.Element => {
   const renderBuilding = ({item}: RenderBuilding) => {
     return (
       <View>
-        <Text style={styles.text} type="h1">
+        <Text style={styles.text} type="h1" color="secondary">
           {item.name}
         </Text>
         <FlatList
@@ -55,13 +55,11 @@ const HomeScreen = (): JSX.Element => {
     );
   };
   return (
-    <View>
-      <FlatList
-        style={styles.wrapper}
-        data={content}
-        renderItem={renderBuilding}
-      />
-    </View>
+    <FlatList
+      style={styles.wrapper}
+      data={content}
+      renderItem={renderBuilding}
+    />
   );
 };
 export default HomeScreen;

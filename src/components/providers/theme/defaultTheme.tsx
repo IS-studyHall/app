@@ -5,6 +5,9 @@ const colors: Colors = {
   primary: {
     main: 'orange',
   },
+  secondary: {
+    main: '#00A9FF',
+  },
   success: {},
   info: {},
   warning: {},

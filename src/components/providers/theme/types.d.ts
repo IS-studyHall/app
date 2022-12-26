@@ -31,6 +31,7 @@ interface Color {
 interface Colors {
   background: Color;
   primary: Color;
+  secondary: Color;
   success: Color;
   info: Color;
   warning: Color;

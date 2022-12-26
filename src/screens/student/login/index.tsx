@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import Button from '../../components/atomics/atoms/button';
-import Input from '../../components/atomics/atoms/input';
-import theme from '../../components/providers/theme/defaultTheme';
+import Button from '../../../components/atomics/atoms/button';
+import Input from '../../../components/atomics/atoms/input';
+import theme from '../../../components/providers/theme/defaultTheme';
 import {useFormik as useForm} from 'formik';
-import Layout from '../../components/providers/layout';
-import Text from '../../components/atomics/atoms/text';
+import Layout from '../../../components/providers/layout';
+import Text from '../../../components/atomics/atoms/text';
 const LoginScreen = (): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -32,28 +32,28 @@ const LoginScreen = (): JSX.Element => {
   });
   const form = useForm({
     initialValues: {
-      email: '',
+      username: '',
       password: '',
     },
-    onSubmit: ({email, password}) => {
-      console.log(email, password);
+    onSubmit: ({username, password}) => {
+      console.log(username, password);
     },
   });
   return (
-    <Layout>
+    <Layout header={true}>
       <View style={styles.wrapper}>
         <Image
           style={styles.image}
-          source={require('../../assets/images/splash.png')}
+          source={require('../../../assets/images/splash.png')}
         />
         <Text style={styles.text} type="p2" color="hint">
           Effettua l'accesso con le credenziali Esse3
         </Text>
         <Input
           style={styles.input}
-          value={form.values.email}
-          setValue={form.handleChange('email')}
-          placeholder="email"
+          value={form.values.username}
+          setValue={form.handleChange('username')}
+          placeholder="username"
         />
         <Input
           style={styles.input}
