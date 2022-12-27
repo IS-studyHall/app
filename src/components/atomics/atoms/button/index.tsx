@@ -5,32 +5,45 @@ import Text from '../text';
 interface ButtonProps {
   title: string;
   onPress: () => void;
-  status?: 'default' | 'secondary';
+  status?: 'default' | 'primaryOutlined' | 'secondary' | 'secondaryOutlined';
   style?: ViewStyle;
 }
 const Button: React.FC<ButtonProps> = ({title, onPress, status, style}) => {
   const {sizes, colors} = theme;
   const buttonColor = React.useMemo(() => {
     switch (status) {
+      case 'primaryOutlined':
+        return {
+          backgroundColor: colors.base.white,
+          borderWidth: 1,
+          borderColor: colors.primary.main,
+        };
       case 'secondary':
-        return colors.secondary.main;
+        return {backgroundColor: colors.secondary.main};
+      case 'secondaryOutlined':
+        return {
+          backgroundColor: colors.base.white,
+          borderWidth: 1,
+          borderColor: colors.secondary.main,
+        };
       default:
-        return colors.primary.main;
+        return {backgroundColor: colors.primary.main};
     }
-  }, [colors.primary.main, colors.secondary.main, status]);
+  }, [colors.base.white, colors.primary.main, colors.secondary.main, status]);
   const styles = StyleSheet.create({
     wrapper: {
       flexDirection: 'row',
       justifyContent: 'center',
       paddingVertical: sizes.spacings.s,
-      backgroundColor: buttonColor,
       borderRadius: sizes.borderRadius.extraBig,
     },
   });
   return (
     <Pressable onPress={onPress}>
-      <View style={[styles.wrapper, style]}>
-        <Text type="p1" color="light">
+      <View style={[styles.wrapper, buttonColor, style]}>
+        <Text
+          type="p1"
+          color={status?.includes('Outlined') ? 'title' : 'light'}>
           {title}
         </Text>
       </View>

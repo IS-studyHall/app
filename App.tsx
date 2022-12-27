@@ -8,11 +8,16 @@
  * @format
  */
 
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import React from 'react';
 import NavigationProvider from './src/components/providers/navigation/flow';
 
 const App = () => {
-  return <NavigationProvider />;
+  return (
+    <BottomSheetModalProvider>
+      <NavigationProvider />
+    </BottomSheetModalProvider>
+  );
 };
 /*
     <SafeAreaView style={backgroundStyle}>

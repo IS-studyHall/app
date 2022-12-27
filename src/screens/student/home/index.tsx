@@ -2,19 +2,21 @@ import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
-import Studyroom from './components/studyroom';
+import Studyroom from '../../../components/atomics/molecules/preview';
 import {content} from './data';
+import {StackHeaderProps} from '@react-navigation/stack';
 interface RenderBuilding {
   item: Building;
 }
 interface renderStudyRoom {
   item: Studyroom;
 }
-const HomeScreen = (): JSX.Element => {
-  const {sizes} = theme;
+const HomeScreen: React.FC<StackHeaderProps> = ({navigation}): JSX.Element => {
+  const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     wrapper: {
       paddingTop: sizes.spacings.l,
+      backgroundColor: colors.background.main,
     },
     building: {
       marginBottom: sizes.spacings.xl,
@@ -29,12 +31,16 @@ const HomeScreen = (): JSX.Element => {
     },
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
+    const handlePress = () => {
+      navigation.navigate('studyroom');
+    };
     return (
       <Studyroom
         key={item.key}
         name={item.name}
         image={item.image}
         style={styles.studyRoom}
+        onPress={handlePress}
       />
     );
   };

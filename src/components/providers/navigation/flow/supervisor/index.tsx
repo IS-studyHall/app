@@ -9,6 +9,8 @@ import Header from '../../components/header';
 import {Platform, StyleSheet, View} from 'react-native';
 import RoundedButton from '../../../../atomics/atoms/rounded-button';
 import theme from '../../../theme/defaultTheme';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import AddStudyroomBottomSheet from '../../../../atomics/organisms/add-studyroom-bottom-sheet';
 const Tab = createBottomTabNavigator();
 interface AdapterProps {
   children: JSX.Element;
@@ -22,6 +24,10 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
       alignSelf: 'center',
     },
   });
+  const bottomSheetRef = React.useRef<BottomSheetModal>(null);
+  const handleAddStudyroom = () => {
+    bottomSheetRef.current?.present();
+  };
   return (
     <View>
       {children}
@@ -29,10 +35,9 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
         style={styles.button}
         title={'+'}
         status="secondary"
-        onPress={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onPress={handleAddStudyroom}
       />
+      <AddStudyroomBottomSheet ref={bottomSheetRef} id="esempio" />
     </View>
   );
 };

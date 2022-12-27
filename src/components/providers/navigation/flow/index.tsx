@@ -7,7 +7,7 @@ import UnloggedNavigation from './unlogged';
 
 const NavigationProvider = (): JSX.Element => {
   const logged = true;
-  const supervisor = true;
+  const supervisor = false;
   const content = React.useMemo(() => {
     return logged ? (
       supervisor ? (

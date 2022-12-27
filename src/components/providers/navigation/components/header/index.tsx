@@ -1,10 +1,11 @@
 import {BottomTabHeaderProps} from '@react-navigation/bottom-tabs';
+import {StackHeaderProps} from '@react-navigation/stack';
 import * as React from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Text from '../../../../atomics/atoms/text';
 import theme from '../../../theme/defaultTheme';
 
-const Header: React.FC<BottomTabHeaderProps> = () => {
+const Header: React.FC<BottomTabHeaderProps | StackHeaderProps> = () => {
   const {colors, sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {

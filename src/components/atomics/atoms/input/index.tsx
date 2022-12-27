@@ -1,33 +1,43 @@
-import {StyleSheet, TextInput as RNInput, View, ViewStyle} from 'react-native';
+import {ViewStyle} from 'react-native';
 import * as React from 'react';
-import theme from '../../../providers/theme/defaultTheme';
+import StandardInput from './standard';
+import InputImage from './image';
 interface InputProps {
+  type?: 'standard' | 'image';
   value: string;
-  setValue: (e: React.ChangeEvent<any>) => void;
+  setValue: (e: any) => void; //gestire il tipo di e in modo adeguato
   placeholder?: string;
   style?: ViewStyle;
 }
-const Input: React.FC<InputProps> = ({value, setValue, placeholder, style}) => {
-  const {sizes, colors} = theme;
-  const styles = StyleSheet.create({
-    input: {
-      borderColor: colors.divider,
-      borderWidth: 1,
-      backgroundColor: colors.base.white,
-      borderRadius: sizes.borderRadius.extraSmall,
-      height: 35,
-      paddingHorizontal: sizes.spacings.xs,
-    },
-  });
-  return (
-    <View style={style}>
-      <RNInput
-        style={styles.input}
-        value={value}
-        onChange={setValue}
-        placeholder={placeholder}
-      />
-    </View>
-  );
+const Input: React.FC<InputProps> = ({
+  type,
+  value,
+  setValue,
+  placeholder,
+  style,
+}) => {
+  const TypeInput = (): JSX.Element => {
+    switch (type) {
+      case 'image':
+        return (
+          <InputImage
+            value={value}
+            setValue={setValue}
+            placeholder={placeholder}
+            style={style}
+          />
+        );
+      default:
+        return (
+          <StandardInput
+            value={value}
+            setValue={setValue}
+            placeholder={placeholder}
+            style={style}
+          />
+        );
+    }
+  };
+  return <TypeInput />;
 };
 export default Input;

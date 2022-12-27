@@ -1,0 +1,55 @@
+export const active: Reservation[] = [
+  {
+    key: '1',
+    building: 'Edificio F',
+    studyroom: 'scienze 1',
+    date: '09/12/22',
+    start: '9:00',
+    end: '11:00',
+    lat: '40.8277007',
+    lng: '14.5073333',
+  },
+  {
+    key: '2',
+    building: 'Edificio F',
+    studyroom: 'scienze 1',
+    date: '09/12/22',
+    start: '9:00',
+    end: '11:00',
+    lat: '40.8277007',
+    lng: '14.5073333',
+  },
+];
+
+export const expired: Reservation[] = [
+  {
+    key: '1',
+    building: 'Edificio F',
+    studyroom: 'scienze 1',
+    date: '09/12/22',
+    start: '9:00',
+    end: '11:00',
+    lat: '40.8277007',
+    lng: '14.5073333',
+  },
+  {
+    key: '2',
+    building: 'Edificio F',
+    studyroom: 'scienze 1',
+    date: '09/12/22',
+    start: '9:00',
+    end: '11:00',
+    lat: '40.8277007',
+    lng: '14.5073333',
+  },
+  {
+    key: '3',
+    building: 'Edificio F',
+    studyroom: 'scienze 1',
+    date: '09/12/22',
+    start: '9:00',
+    end: '11:00',
+    lat: '40.8277007',
+    lng: '14.5073333',
+  },
+];

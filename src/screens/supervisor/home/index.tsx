@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Button from '../../../components/atomics/atoms/button';
-import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
-import Studyroom from './components/studyroom';
+import Studyroom from '../../../components/atomics/molecules/preview';
 import {content} from './data';
-interface RenderBuilding {
-  item: Building;
-}
 interface renderStudyRoom {
   item: Studyroom;
 }
@@ -17,16 +13,18 @@ const HomeScreen = (): JSX.Element => {
     wrapper: {
       paddingTop: sizes.spacings.l,
     },
-    building: {
-      marginBottom: sizes.spacings.xl,
+    content: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingBottom: 2 * sizes.spacings.xl,
     },
     text: {
       marginLeft: sizes.spacings.m,
       textTransform: 'capitalize',
       marginBottom: sizes.spacings.s,
     },
-    studyRoom: {
-      marginLeft: sizes.spacings.m,
+    separator: {
+      marginBottom: sizes.spacings.s,
     },
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
@@ -35,32 +33,18 @@ const HomeScreen = (): JSX.Element => {
         key={item.key}
         name={item.name}
         image={item.image}
-        style={styles.studyRoom}
+        style={styles.separator}
       />
-    );
-  };
-  const renderBuilding = ({item}: RenderBuilding) => {
-    return (
-      <View>
-        <Text style={styles.text} type="h1" color="secondary">
-          {item.name}
-        </Text>
-        <FlatList
-          style={styles.building}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={item.studyroom}
-          renderItem={renderStudyRoom}
-        />
-      </View>
     );
   };
   return (
     <View>
       <FlatList
         style={styles.wrapper}
+        contentContainerStyle={styles.content}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
         data={content}
-        renderItem={renderBuilding}
+        renderItem={renderStudyRoom}
       />
       <Button
         title={'+'}

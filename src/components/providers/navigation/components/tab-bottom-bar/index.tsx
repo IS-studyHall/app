@@ -22,7 +22,7 @@ import theme from '../../../theme/defaultTheme';
   Knowledge: 'compassSelected',
   // Dashboard: 'dashboard',
 };*/
-const screens = ['Home', 'Settings'];
+const screens = ['Home', 'Prenotazioni', 'Impostazioni'];
 
 const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
   const {sizes, colors} = theme;

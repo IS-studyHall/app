@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import theme from '../../../providers/theme/defaultTheme';
 interface CardProps {
   children: JSX.Element[] | JSX.Element;
   onPress?: () => void;
+  style?: ViewStyle;
 }
-const Card: React.FC<CardProps> = ({children, onPress}) => {
+const Card: React.FC<CardProps> = ({children, onPress, style}) => {
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     wrapper: {
@@ -17,7 +18,7 @@ const Card: React.FC<CardProps> = ({children, onPress}) => {
     },
   });
   return (
-    <Pressable onPress={onPress}>
+    <Pressable style={style} onPress={onPress}>
       <View style={styles.wrapper}>{children}</View>
     </Pressable>
   );
