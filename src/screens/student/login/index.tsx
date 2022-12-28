@@ -6,6 +6,7 @@ import theme from '../../../components/providers/theme/defaultTheme';
 import {useFormik as useForm} from 'formik';
 import Layout from '../../../components/providers/layout';
 import Text from '../../../components/atomics/atoms/text';
+import {loginStudent, store} from '../../../store/module/auth';
 const LoginScreen = (): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -37,6 +38,7 @@ const LoginScreen = (): JSX.Element => {
     },
     onSubmit: ({username, password}) => {
       console.log(username, password);
+      store.dispatch(loginStudent({username, password}));
     },
   });
   return (

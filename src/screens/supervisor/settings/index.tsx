@@ -3,6 +3,7 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import Card from '../../../components/atomics/atoms/card';
 import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
+import {logout, store} from '../../../store/module/auth';
 interface Item {
   textLeft: string;
   textRight: string;
@@ -42,6 +43,7 @@ const SettingsScreen = () => {
       </View>
     );
   };
+  const handleLogout = () => store.dispatch(logout());
   return (
     <View style={styles.wrapper}>
       <Card>
@@ -49,7 +51,7 @@ const SettingsScreen = () => {
         <RenderItem textLeft="Cognome" textRight="Mattiello" />
         <RenderItem textLeft="Matricola" textRight="0512110185" last />
       </Card>
-      <Pressable style={styles.logout}>
+      <Pressable style={styles.logout} onPress={handleLogout}>
         <Text style={styles.text} type="p1" color="danger">
           Log out
         </Text>

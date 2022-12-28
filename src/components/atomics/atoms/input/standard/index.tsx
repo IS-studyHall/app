@@ -3,7 +3,7 @@ import * as React from 'react';
 import theme from '../../../../providers/theme/defaultTheme';
 interface InputProps {
   value: string;
-  setValue: (e: React.ChangeEvent<any>) => void;
+  setValue: (e: string) => void;
   placeholder?: string;
   style?: ViewStyle;
 }
@@ -24,12 +24,15 @@ const StandardInput: React.FC<InputProps> = ({
       paddingHorizontal: sizes.spacings.xs,
     },
   });
+  const handleChange = (text: string) => {
+    setValue(text);
+  };
   return (
     <View style={style}>
       <RNInput
         style={styles.input}
         value={value}
-        onChange={setValue}
+        onChangeText={handleChange}
         placeholder={placeholder}
       />
     </View>

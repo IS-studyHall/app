@@ -48,6 +48,7 @@ const ReservationScreen = () => {
           end={item.end}
           lat={item.lat}
           lng={item.lng}
+          footer={false}
         />
       ))}
       <View style={styles.divider} />

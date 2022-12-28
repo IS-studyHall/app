@@ -18,6 +18,7 @@ interface ReservationProps {
   lat: string;
   lng: string;
   style?: ViewStyle;
+  footer?: boolean;
 }
 const Reservation: React.FC<ReservationProps> = ({
   building,
@@ -27,6 +28,7 @@ const Reservation: React.FC<ReservationProps> = ({
   end,
   lat,
   lng,
+  footer = true,
 }) => {
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
@@ -76,15 +78,20 @@ const Reservation: React.FC<ReservationProps> = ({
       <RenderItem
         textLeft="data e ora"
         textRight={`${start} - ${end} ${date}`}
+        last={!footer}
       />
-      <View style={styles.footer}>
-        <Pressable onPress={handlePosition}>
-          <Text type="p1">Indicazioni</Text>
-        </Pressable>
-        <Pressable onPress={handleDelete}>
-          <Text type="p1">Elimina</Text>
-        </Pressable>
-      </View>
+      {footer ? (
+        <View style={styles.footer}>
+          <Pressable onPress={handlePosition}>
+            <Text type="p1">Indicazioni</Text>
+          </Pressable>
+          <Pressable onPress={handleDelete}>
+            <Text type="p1">Elimina</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <></>
+      )}
     </Card>
   );
 };
