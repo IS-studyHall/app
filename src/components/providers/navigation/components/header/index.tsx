@@ -5,7 +5,13 @@ import {Platform, StyleSheet, View} from 'react-native';
 import Text from '../../../../atomics/atoms/text';
 import theme from '../../../theme/defaultTheme';
 
-const Header: React.FC<BottomTabHeaderProps | StackHeaderProps> = () => {
+interface BottomTabHeader extends BottomTabHeaderProps {
+  title: string;
+}
+interface StackHeader extends StackHeaderProps {
+  title: string;
+}
+const Header: React.FC<BottomTabHeader | StackHeader> = ({title}) => {
   const {colors, sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {
@@ -20,7 +26,7 @@ const Header: React.FC<BottomTabHeaderProps | StackHeaderProps> = () => {
   return (
     <View style={styles.wrapper}>
       <Text type="h3" color="light">
-        Home
+        {title}
       </Text>
     </View>
   );

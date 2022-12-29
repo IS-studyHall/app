@@ -4,7 +4,7 @@ import theme from '../../../providers/theme/defaultTheme';
 interface TextProps {
   children: string;
   type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p1' | 'p2';
-  color?: 'title' | 'danger' | 'light' | 'hint' | 'secondary';
+  color?: 'title' | 'danger' | 'light' | 'hint' | 'secondary' | 'url';
   style?: any;
 }
 const Text: React.FC<TextProps> = ({

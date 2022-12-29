@@ -37,7 +37,7 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
         status="secondary"
         onPress={handleAddStudyroom}
       />
-      <AddStudyroomBottomSheet ref={bottomSheetRef} id="esempio" />
+      <AddStudyroomBottomSheet ref={bottomSheetRef} title="aula studio" />
     </View>
   );
 };
@@ -53,7 +53,7 @@ const SupervisorNavigation = (): JSX.Element => {
         name="Home"
         component={HomeSupervisorScreen}
         options={{
-          header: props => <Header {...props} />,
+          header: props => <Header title="Home" {...props} />,
         }}
       />
       <Tab.Screen name="Settings" component={SettingsSupervisorScreen} />

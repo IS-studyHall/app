@@ -16,6 +16,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
   AddStudyroomBottomSheet
 >(({title}, ref): JSX.Element => {
   const {sizes, colors} = theme;
+  title;
   const styles = StyleSheet.create({
     contentContainer: {
       flex: 1,

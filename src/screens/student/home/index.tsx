@@ -4,14 +4,17 @@ import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
 import Studyroom from '../../../components/atomics/molecules/preview';
 import {content} from './data';
-import {StackHeaderProps} from '@react-navigation/stack';
+import {ParamListBase} from '@react-navigation/native';
 interface RenderBuilding {
   item: Building;
 }
 interface renderStudyRoom {
   item: Studyroom;
 }
-const HomeScreen: React.FC<StackHeaderProps> = ({navigation}): JSX.Element => {
+
+const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
+  navigation,
+}): JSX.Element => {
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     wrapper: {

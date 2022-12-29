@@ -3,8 +3,10 @@ import * as React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import Text from '../../../../atomics/atoms/text';
 import theme from '../../../theme/defaultTheme';
-
-const BackHeader: React.FC<StackHeaderProps> = ({navigation, route}) => {
+interface BackHeaderProps extends StackHeaderProps {
+  title?: string;
+}
+const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
   const {colors, sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {
@@ -34,7 +36,7 @@ const BackHeader: React.FC<StackHeaderProps> = ({navigation, route}) => {
         </Text>
       </Pressable>
       <Text style={styles.item} type="h3" color="light">
-        {(route.params as {title: string} | undefined)?.title ?? ''}
+        {title ?? (route.params as {title: string} | undefined)?.title ?? ''}
       </Text>
       <View style={styles.item} />
     </View>

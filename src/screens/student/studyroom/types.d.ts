@@ -1,6 +1,7 @@
 interface StudyRoom {
   key: string;
   name: string;
+  building: string;
   image: string;
   seats: string;
   timeRange: TimeRange[];

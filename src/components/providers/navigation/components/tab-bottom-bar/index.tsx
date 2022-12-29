@@ -6,14 +6,14 @@ import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import Text from '../../../../atomics/atoms/text';
 //import LinearGradient from 'react-native-linear-gradient';
 import theme from '../../../theme/defaultTheme';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-/*const tabIconsUnselected: {[key: string]: IconName} = {
-  Workout: 'workout',
-  Nutrition: 'nutrition',
-  Chat: 'chatDouble',
-  Knowledge: 'compass',
+const tabIconsUnselected: {[key: string]: string} = {
+  Home: 'home',
+  Prenotazioni: 'book',
+  Impostazioni: 'setting',
   // Dashboard: 'dashboard',
-};*/
+};
 
 /*const tabIconsSelected: {[key: string]: IconName} = {
   Workout: 'workoutSelected',
@@ -30,7 +30,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      paddingVertical: sizes.spacings.m,
+      paddingVertical: sizes.spacings.s,
       paddingHorizontal: sizes.spacings.s,
       paddingBottom: Platform.select({ios: sizes.bottomBar}),
       backgroundColor: colors.primary.main,
@@ -65,11 +65,18 @@ const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
             style={styles.tabButton}
             onPress={onPress}
             key={route.name}>
+            <Icon
+              disabled
+              name={tabIconsUnselected[screens[index]]}
+              color="white"
+              size={25}
+            />
             <Text
               type="p1"
               // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 color: isFocused ? 'white' : 'black',
+                marginTop: sizes.spacings.xs,
               }}>
               {screens[index]}
             </Text>

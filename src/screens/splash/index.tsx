@@ -1,11 +1,13 @@
-import {StackHeaderProps} from '@react-navigation/stack';
+import {ParamListBase} from '@react-navigation/native';
 import * as React from 'react';
 import {Dimensions, Image, StyleSheet} from 'react-native';
 import Button from '../../components/atomics/atoms/button';
 import Layout from '../../components/providers/layout';
 import theme from '../../components/providers/theme/defaultTheme';
 
-const SplashScreen: React.FC<StackHeaderProps> = ({navigation}) => {
+const SplashScreen: ScreenComponentType<ParamListBase, 'Splash'> = ({
+  navigation,
+}) => {
   const {width} = Dimensions.get('screen');
   const {sizes} = theme;
   const styles = StyleSheet.create({

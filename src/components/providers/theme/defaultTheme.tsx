@@ -10,8 +10,12 @@ const colors: Colors = {
   },
   success: {},
   info: {},
-  warning: {},
-  danger: {},
+  warning: {
+    main: 'yellow',
+  },
+  danger: {
+    main: 'red',
+  },
   base: {
     white: '#FFFFFF',
     black: '#000000',
@@ -91,7 +95,7 @@ const sizes: Sizes = {
     small: 8,
     extraSmall: 5,
   },
-  bottomBar: 50,
+  bottomBar: 40,
 };
 
 const theme: Theme = {

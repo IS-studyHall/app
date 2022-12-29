@@ -24,14 +24,14 @@ const UnloggedNavigation = (): JSX.Element => {
         name="LoginStudent"
         component={LoginStudentScreen}
         options={{
-          header: props => <BackHeader {...props} />,
+          header: props => <BackHeader title="Studente" {...props} />,
         }}
       />
       <MainStackNavigator.Screen
         name="LoginSupervisor"
         component={LoginSupervisorScreen}
         options={{
-          header: props => <BackHeader {...props} />,
+          header: props => <BackHeader title="Supervisore" {...props} />,
         }}
       />
     </MainStackNavigator.Navigator>

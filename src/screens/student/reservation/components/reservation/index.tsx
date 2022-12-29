@@ -83,10 +83,14 @@ const Reservation: React.FC<ReservationProps> = ({
       {footer ? (
         <View style={styles.footer}>
           <Pressable onPress={handlePosition}>
-            <Text type="p1">Indicazioni</Text>
+            <Text type="p1" color="secondary">
+              Indicazioni
+            </Text>
           </Pressable>
           <Pressable onPress={handleDelete}>
-            <Text type="p1">Elimina</Text>
+            <Text type="p1" color="danger">
+              Elimina
+            </Text>
           </Pressable>
         </View>
       ) : (

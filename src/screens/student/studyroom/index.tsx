@@ -32,7 +32,7 @@ const StudyroomScreen = () => {
       height: sizes.spacings.l,
     },
     list: {
-      paddingBottom: sizes.spacings.xxl,
+      paddingBottom: 2 * sizes.spacings.xxl,
     },
   });
   const [day, setDay] = React.useState<number>();
@@ -61,14 +61,17 @@ const StudyroomScreen = () => {
       <View style={styles.preview}>
         <Preview
           name={content.name}
+          building={content.building}
           image={content.image}
           adaptToContent
-          gradient={false}
+          gradient
+          active
+          favoriteButton
         />
       </View>
       <DateRange value={day} setValue={setDay} />
       <FlatList
-        style={styles.list}
+        contentContainerStyle={styles.list}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         scrollEnabled={false}
         numColumns={2}

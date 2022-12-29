@@ -20,17 +20,23 @@ const StudentTabBar = (): JSX.Element => {
         name="Home"
         component={HomeStudentScreen}
         options={{
-          header: props => <Header {...props} />,
+          header: props => <Header title="Home" {...props} />,
         }}
       />
       <Tab.Screen
         name="Reservation"
         options={{
-          header: props => <Header {...props} />,
+          header: props => <Header title="Prenotazioni" {...props} />,
         }}
         component={ReservationStudentScreen}
       />
-      <Tab.Screen name="Settings" component={SettingsStudentScreen} />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsStudentScreen}
+        options={{
+          header: props => <Header title="Impostazioni" {...props} />,
+        }}
+      />
     </Tab.Navigator>
   );
 };

@@ -1,6 +1,7 @@
 export const content: StudyRoom = {
   key: '1',
   name: 'scienze 1',
+  building: 'edificio F',
   image: 'https://picsum.photos/550/300',
   seats: '30',
   timeRange: [
