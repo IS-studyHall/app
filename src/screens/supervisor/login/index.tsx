@@ -6,7 +6,7 @@ import theme from '../../../components/providers/theme/defaultTheme';
 import {useFormik as useForm} from 'formik';
 import Layout from '../../../components/providers/layout';
 import Text from '../../../components/atomics/atoms/text';
-import {loginSupervisor, store} from '../../../store/module/auth';
+import {supervisorSdk} from '../../../utils/supervisorSdk';
 const LoginScreen = (): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -37,8 +37,7 @@ const LoginScreen = (): JSX.Element => {
       password: '',
     },
     onSubmit: ({email, password}) => {
-      console.log(email, password);
-      store.dispatch(loginSupervisor());
+      supervisorSdk.login(email, password);
     },
   });
   return (

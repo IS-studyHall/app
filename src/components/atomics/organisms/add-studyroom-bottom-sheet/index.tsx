@@ -8,6 +8,9 @@ import Text from '../../atoms/text';
 import {useFormik as useForm} from 'formik';
 import theme from '../../../providers/theme/defaultTheme';
 import Preview from '../../molecules/preview';
+import {supervisorSdk} from '../../../../utils/supervisorSdk';
+import {buildingStore} from '../../../../store/module/building';
+import SelectOptions from '../../molecules/select-options';
 interface AddStudyroomBottomSheet {
   title: string;
 }
@@ -42,7 +45,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
   });
   // variables
   const snapPoints = React.useMemo(() => ['25%', '100%'], []);
-
+  const buildings = buildingStore.getState().buildings;
   const handleSheetChanges = React.useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -54,12 +57,15 @@ const AddStudyroomBottomSheet = React.forwardRef<
       name: '',
       building: '',
       floor: '',
-      seats: 0,
+      seats: '',
       image: '',
     },
     onSubmit: ({name, building, floor, seats, image}) => {
-      console.log(name, building, floor, seats, image);
+      supervisorSdk.createStudyroom(name, building, floor, seats, image);
     },
+  });
+  React.useEffect(() => {
+    supervisorSdk.getStudyroom();
   });
   return (
     <BottomSheetModal
@@ -85,21 +91,21 @@ const AddStudyroomBottomSheet = React.forwardRef<
           setValue={form.handleChange('name')}
           placeholder="nome"
         />
-        <Input
+        <SelectOptions
+          data={buildings}
+          selected={form.values.building}
+          setSelected={form.handleChange('building')}
           style={styles.input}
-          value={form.values.name}
-          setValue={form.handleChange('building')}
-          placeholder="edificio"
         />
         <Input
           style={styles.input}
-          value={form.values.name}
+          value={form.values.floor}
           setValue={form.handleChange('floor')}
           placeholder="piano"
         />
         <Input
           style={styles.input}
-          value={form.values.name}
+          value={form.values.seats}
           setValue={form.handleChange('seats')}
           placeholder="posti totali"
         />
@@ -109,7 +115,11 @@ const AddStudyroomBottomSheet = React.forwardRef<
           value={form.values.image}
           setValue={form.handleChange('image')}
         />
-        <Button style={styles.button} title="conferma" onPress={handleClose} />
+        <Button
+          style={styles.button}
+          title="conferma"
+          onPress={form.handleSubmit}
+        />
         <Button
           status="primaryOutlined"
           title="annulla"

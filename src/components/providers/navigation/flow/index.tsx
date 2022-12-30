@@ -4,13 +4,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import StudentNavigation from './student';
 import SupervisorNavigation from './supervisor';
 import UnloggedNavigation from './unlogged';
-import {store} from '../../../../store/module/auth';
+import {authStore} from '../../../../store/module/auth';
 
 const NavigationProvider = (): JSX.Element => {
   const [logged, setLogged] = React.useState<boolean>();
   const [supervisor, setSupervisor] = React.useState<boolean>();
-  store.subscribe(() => {
-    const state = store.getState();
+  authStore.subscribe(() => {
+    const state = authStore.getState();
     setLogged(state.logged);
     setSupervisor(state.supervisor);
   });

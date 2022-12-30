@@ -33,7 +33,7 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
       navigation.navigate('studyroom');
-    }
+    };
     return (
       <Studyroom
         key={item.key}

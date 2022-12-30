@@ -16,28 +16,25 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   style,
 }) => {
-  const TypeInput = (): JSX.Element => {
-    switch (type) {
-      case 'image':
-        return (
-          <InputImage
-            value={value}
-            setValue={setValue}
-            placeholder={placeholder}
-            style={style}
-          />
-        );
-      default:
-        return (
-          <StandardInput
-            value={value}
-            setValue={setValue}
-            placeholder={placeholder}
-            style={style}
-          />
-        );
-    }
-  };
-  return <TypeInput />;
+  switch (type) {
+    case 'image':
+      return (
+        <InputImage
+          value={value}
+          setValue={setValue}
+          placeholder={placeholder}
+          style={style}
+        />
+      );
+    default:
+      return (
+        <StandardInput
+          value={value}
+          setValue={setValue}
+          placeholder={placeholder}
+          style={style}
+        />
+      );
+  }
 };
 export default Input;

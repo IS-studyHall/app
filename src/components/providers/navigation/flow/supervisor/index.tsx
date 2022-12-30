@@ -14,6 +14,7 @@ import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import AddStudyroomBottomSheet from '../../../../atomics/organisms/add-studyroom-bottom-sheet';
 import {createStackNavigator} from '@react-navigation/stack';
 import BackHeader from '../../components/back-header';
+import {supervisorSdk} from '../../../../../utils/supervisorSdk';
 const Tab = createBottomTabNavigator();
 const SupervisorStackNavigator = createStackNavigator();
 
@@ -71,6 +72,9 @@ const SupervisorTabBar = (): JSX.Element => {
 
 const SupervisorNavigation = (): JSX.Element => {
   const {colors} = theme;
+  React.useEffect(() => {
+    supervisorSdk.getBuilding();
+  }, []);
   return (
     <SupervisorStackNavigator.Navigator
       screenOptions={{

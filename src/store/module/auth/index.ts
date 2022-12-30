@@ -5,6 +5,8 @@ const authSlice = createSlice({
   initialState: {
     logged: false,
     supervisor: false,
+    email: '',
+    username: '',
   },
   reducers: {
     loginStudent: (state, action) => {
@@ -12,8 +14,10 @@ const authSlice = createSlice({
       state.logged = true;
       state.supervisor = false;
     },
-    loginSupervisor: (state, action) => {
-      console.log(action);
+    loginSupervisor: (state, action: Action<User>) => {
+      const user: User = action.payload;
+      state.email = user.email;
+      state.username = user.username;
       state.logged = true;
       state.supervisor = true;
     },
@@ -26,6 +30,6 @@ const authSlice = createSlice({
 
 export const {loginStudent, loginSupervisor, logout} = authSlice.actions;
 
-export const store = configureStore({
+export const authStore = configureStore({
   reducer: authSlice.reducer,
 });
