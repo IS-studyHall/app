@@ -3,13 +3,14 @@ import {
   HomeStudentScreen,
   ReservationStudentScreen,
   SettingsStudentScreen,
+  StudyroomStudentScreen,
 } from '../../../../../screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TabBar from '../../components/tab-bottom-bar';
 import Header from '../../components/header';
 import {createStackNavigator} from '@react-navigation/stack';
-import StudyroomScreen from '../../../../../screens/student/studyroom';
 import BackHeader from '../../components/back-header';
+import theme from '../../../theme/defaultTheme';
 const Tab = createBottomTabNavigator();
 const StudentStackNavigator = createStackNavigator();
 
@@ -42,8 +43,12 @@ const StudentTabBar = (): JSX.Element => {
 };
 
 const StudentNavigation = (): JSX.Element => {
+  const {colors} = theme;
   return (
-    <StudentStackNavigator.Navigator>
+    <StudentStackNavigator.Navigator
+      screenOptions={{
+        cardStyle: {backgroundColor: colors.background.main},
+      }}>
       <StudentStackNavigator.Screen
         options={{headerShown: false}}
         name="TabBar"
@@ -51,7 +56,7 @@ const StudentNavigation = (): JSX.Element => {
       />
       <StudentStackNavigator.Screen
         name="studyroom"
-        component={StudyroomScreen}
+        component={StudyroomStudentScreen}
         options={{
           header: props => <BackHeader {...props} />,
         }}

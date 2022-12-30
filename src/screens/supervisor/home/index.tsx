@@ -4,10 +4,13 @@ import Button from '../../../components/atomics/atoms/button';
 import theme from '../../../components/providers/theme/defaultTheme';
 import Studyroom from '../../../components/atomics/molecules/preview';
 import {content} from './data';
+import {ParamListBase} from '@react-navigation/native';
 interface renderStudyRoom {
   item: Studyroom;
 }
-const HomeScreen = (): JSX.Element => {
+const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
+  navigation,
+}): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {
@@ -28,12 +31,16 @@ const HomeScreen = (): JSX.Element => {
     },
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
+    const handlePress = () => {
+      navigation.navigate('studyroom');
+    }
     return (
       <Studyroom
         key={item.key}
         name={item.name}
         image={item.image}
         style={styles.separator}
+        onPress={handlePress}
       />
     );
   };

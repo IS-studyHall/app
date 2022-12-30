@@ -22,9 +22,17 @@ const tabIconsUnselected: {[key: string]: string} = {
   Knowledge: 'compassSelected',
   // Dashboard: 'dashboard',
 };*/
-const screens = ['Home', 'Prenotazioni', 'Impostazioni'];
+const studentScreens = ['Home', 'Prenotazioni', 'Impostazioni'];
+const supervisorScreens = ['Home', 'Impostazioni'];
 
-const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
+interface BottomTabBar extends BottomTabBarProps {
+  supervisor?: boolean;
+}
+const TabBar: React.FC<BottomTabBar> = ({
+  state,
+  navigation,
+  supervisor = false,
+}) => {
   const {sizes, colors} = theme;
 
   const styles = StyleSheet.create({
@@ -43,6 +51,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
       marginBottom: 4,
     },
   });
+  const screens = supervisor ? supervisorScreens : studentScreens;
   return (
     <View style={styles.container}>
       {state.routes.map((route, index) => {

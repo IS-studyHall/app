@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   HomeSupervisorScreen,
   SettingsSupervisorScreen,
+  StudyroomSupervisorScreen,
 } from '../../../../../screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TabBar from '../../components/tab-bottom-bar';
@@ -11,7 +12,11 @@ import RoundedButton from '../../../../atomics/atoms/rounded-button';
 import theme from '../../../theme/defaultTheme';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import AddStudyroomBottomSheet from '../../../../atomics/organisms/add-studyroom-bottom-sheet';
+import {createStackNavigator} from '@react-navigation/stack';
+import BackHeader from '../../components/back-header';
 const Tab = createBottomTabNavigator();
+const SupervisorStackNavigator = createStackNavigator();
+
 interface AdapterProps {
   children: JSX.Element;
 }
@@ -20,7 +25,10 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
   const styles = StyleSheet.create({
     button: {
       position: 'absolute',
-      bottom: Platform.OS === 'ios' ? sizes.bottomBar : sizes.bottomBar / 2,
+      bottom:
+        Platform.OS === 'ios'
+          ? 1.5 * sizes.bottomBar
+          : (1.5 * sizes.bottomBar) / 2,
       alignSelf: 'center',
     },
   });
@@ -41,12 +49,12 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
     </View>
   );
 };
-const SupervisorNavigation = (): JSX.Element => {
+const SupervisorTabBar = (): JSX.Element => {
   return (
     <Tab.Navigator
       tabBar={props => (
         <TabBarSupervisorAdapter>
-          <TabBar {...props} />
+          <TabBar {...props} supervisor />
         </TabBarSupervisorAdapter>
       )}>
       <Tab.Screen
@@ -61,4 +69,26 @@ const SupervisorNavigation = (): JSX.Element => {
   );
 };
 
+const SupervisorNavigation = (): JSX.Element => {
+  const {colors} = theme;
+  return (
+    <SupervisorStackNavigator.Navigator
+      screenOptions={{
+        cardStyle: {backgroundColor: colors.background.main},
+      }}>
+      <SupervisorStackNavigator.Screen
+        options={{headerShown: false}}
+        name="TabBar"
+        component={SupervisorTabBar}
+      />
+      <SupervisorStackNavigator.Screen
+        name="studyroom"
+        component={StudyroomSupervisorScreen}
+        options={{
+          header: props => <BackHeader {...props} />,
+        }}
+      />
+    </SupervisorStackNavigator.Navigator>
+  );
+};
 export default SupervisorNavigation;
