@@ -58,7 +58,7 @@ class SupervisorSdk {
     const {data} = await SupervisorSdk._instance.api.get(
       '/studyroom/supervisor',
     );
-    console.log('STUDYROOM READ', data);
+    console.log('STUDYROOMS READ', data);
     buildingStore.dispatch(setStudyrooms(data.data));
   }
 
@@ -67,6 +67,12 @@ class SupervisorSdk {
     const {data} = await SupervisorSdk._instance.api.get(`/studyroom/${id}`);
     buildingStore.dispatch(setStudyroom(data.data));
     console.log('STUDYROOM READ', data);
+  }
+
+  async deleteStudyroom(id: string) {
+    console.log('delete');
+    await SupervisorSdk._instance.api.delete(`/studyroom/${id}`);
+    console.log('STUDYROOM DELETE', id);
   }
 }
 

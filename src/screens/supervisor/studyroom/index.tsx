@@ -12,7 +12,7 @@ interface Item {
   index: number;
 }
 const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
-  route,
+  route, navigation
 }) => {
   const {sizes, colors} = theme;
   const {id} = route.params;
@@ -58,7 +58,10 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   });
   const handleDisable = () => console.log('disable');
   const handleReservations = () => console.log('reservations');
-  const handleDelete = () => console.log('delete');
+  const handleDelete = async () => {
+    await supervisorSdk.deleteStudyroom(id);
+    navigation.goBack();
+  };
   const handleUpdate = () => console.log('update');
   const buttons = [
     {
@@ -94,12 +97,16 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       </View>
     );
   };
+  const building = React.useMemo(() => {
+    const buildings = buildingStore.getState().buildings;
+    return buildings.find(o => o._id === studyroom?.building);
+  }, [studyroom?.building]);
   return studyroom ? (
     <View style={styles.wrapper}>
       <View style={styles.preview}>
         <Preview
           name={studyroom.name}
-          building={studyroom.building}
+          building={`Edificio ${building?.name}`}
           image={studyroom.image}
           adaptToContent
           gradient

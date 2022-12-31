@@ -50,8 +50,9 @@ const AddStudyroomBottomSheet = React.forwardRef<
   const handleSheetChanges = React.useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
-  const handleClose = React.useCallback(() => {
+  const handleClose = React.useCallback(async () => {
     (ref as React.RefObject<BottomSheetModalMethods>).current?.close();
+    await supervisorSdk.getStudyrooms();
   }, [ref]);
   const form = useForm({
     initialValues: {
@@ -63,7 +64,6 @@ const AddStudyroomBottomSheet = React.forwardRef<
     },
     onSubmit: async ({name, building, floor, seats, image}) => {
       await supervisorSdk.createStudyroom(name, building, floor, seats, image);
-      await supervisorSdk.getStudyrooms();
       handleClose();
     },
   });
