@@ -1,11 +1,11 @@
 interface Building {
-  key: string;
+  _id: string;
   name: string;
   studyroom: Studyroom[];
 }
 
 interface Studyroom {
-  key: string;
+  _id: string;
   name: string;
   image: string;
 }

@@ -3,6 +3,7 @@ import {loginSupervisor, authStore} from '../../store/module/auth';
 import {
   buildingStore,
   setBuildings,
+  setStudyroom,
   setStudyrooms,
 } from '../../store/module/building';
 
@@ -33,7 +34,7 @@ class SupervisorSdk {
   }
   async getBuilding() {
     const {data} = await SupervisorSdk._instance.api.get('/building/');
-    console.log('BUILDING READ');
+    console.log('BUILDING READ', data.data);
     buildingStore.dispatch(setBuildings(data.data));
   }
   async createStudyroom(
@@ -53,11 +54,18 @@ class SupervisorSdk {
     console.log('STUDYROOM CREATE');
   }
 
-  async getStudyroom() {
+  async getStudyrooms() {
     const {data} = await SupervisorSdk._instance.api.get(
       '/studyroom/supervisor',
     );
+    console.log('STUDYROOM READ', data);
     buildingStore.dispatch(setStudyrooms(data.data));
+  }
+
+  async getStudyroom(id: string) {
+    console.log(id);
+    const {data} = await SupervisorSdk._instance.api.get(`/studyroom/${id}`);
+    buildingStore.dispatch(setStudyroom(data.data));
     console.log('STUDYROOM READ', data);
   }
 }

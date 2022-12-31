@@ -73,7 +73,11 @@ const SupervisorTabBar = (): JSX.Element => {
 const SupervisorNavigation = (): JSX.Element => {
   const {colors} = theme;
   React.useEffect(() => {
-    supervisorSdk.getBuilding();
+    const getData = async () => {
+      await supervisorSdk.getBuilding();
+      await supervisorSdk.getStudyrooms();
+    };
+    getData();
   }, []);
   return (
     <SupervisorStackNavigator.Navigator

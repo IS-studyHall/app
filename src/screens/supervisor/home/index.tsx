@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import Button from '../../../components/atomics/atoms/button';
 import theme from '../../../components/providers/theme/defaultTheme';
 import Studyroom from '../../../components/atomics/molecules/preview';
-import {content} from './data';
 import {ParamListBase} from '@react-navigation/native';
+import {buildingStore} from '../../../store/module/building';
+import {supervisorSdk} from '../../../utils/supervisorSdk';
 interface renderStudyRoom {
   item: Studyroom;
 }
@@ -30,9 +30,21 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
       marginBottom: sizes.spacings.s,
     },
   });
+  React.useEffect(() => {
+    const getStudyrooms = async () => {
+      await supervisorSdk.getStudyrooms();
+    };
+    getStudyrooms();
+  }, []);
+  const [studyrooms, setStudyrooms] = React.useState<StudyRoom[]>();
+  buildingStore.subscribe(() => {
+    const state = buildingStore.getState();
+    setStudyrooms(state.studyrooms);
+  });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
-      navigation.navigate('studyroom');
+      console.log('studyroom', item);
+      navigation.navigate('studyroom', {id: item._id});
     };
     return (
       <Studyroom
@@ -50,14 +62,9 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
         style={styles.wrapper}
         contentContainerStyle={styles.content}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={content}
+        data={studyrooms}
+        keyExtractor={item => item._id}
         renderItem={renderStudyRoom}
-      />
-      <Button
-        title={'+'}
-        onPress={function (): void {
-          throw new Error('Function not implemented.');
-        }}
       />
     </View>
   );

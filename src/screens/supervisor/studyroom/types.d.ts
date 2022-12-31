@@ -1,9 +1,10 @@
 interface StudyRoom {
-  key: string;
+  _id: string;
   name: string;
   building: string;
   image: string;
   seats: string;
+  isactive: boolean;
   timeRange: TimeRange[];
 }
 

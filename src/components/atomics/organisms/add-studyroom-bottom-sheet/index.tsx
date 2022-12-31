@@ -46,6 +46,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
   // variables
   const snapPoints = React.useMemo(() => ['25%', '100%'], []);
   const buildings = buildingStore.getState().buildings;
+  console.log(buildings);
   const handleSheetChanges = React.useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -60,12 +61,11 @@ const AddStudyroomBottomSheet = React.forwardRef<
       seats: '',
       image: '',
     },
-    onSubmit: ({name, building, floor, seats, image}) => {
-      supervisorSdk.createStudyroom(name, building, floor, seats, image);
+    onSubmit: async ({name, building, floor, seats, image}) => {
+      await supervisorSdk.createStudyroom(name, building, floor, seats, image);
+      await supervisorSdk.getStudyrooms();
+      handleClose();
     },
-  });
-  React.useEffect(() => {
-    supervisorSdk.getStudyroom();
   });
   return (
     <BottomSheetModal

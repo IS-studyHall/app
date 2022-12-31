@@ -2,16 +2,20 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ParamListBase} from '@react-navigation/native';
 import Preview from '../../../components/atomics/molecules/preview';
-import {content} from './data';
 import theme from '../../../components/providers/theme/defaultTheme';
 import {FlatList} from 'react-native-gesture-handler';
 import Button from '../../../components/atomics/atoms/button';
+import {supervisorSdk} from '../../../utils/supervisorSdk';
+import {buildingStore} from '../../../store/module/building';
 interface Item {
   item: any;
   index: number;
 }
-const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = () => {
+const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
+  route,
+}) => {
   const {sizes, colors} = theme;
+  const {id} = route.params;
   const styles = StyleSheet.create({
     wrapper: {
       backgroundColor: colors.background.main,
@@ -40,6 +44,17 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = () => {
       flex: 1,
       marginHorizontal: sizes.spacings.xs,
     },
+  });
+  React.useEffect(() => {
+    const getStudyroom = async () => {
+      await supervisorSdk.getStudyroom(id);
+    };
+    getStudyroom();
+  }, [id]);
+  const [studyroom, setStudyroom] = React.useState<StudyRoom>();
+  buildingStore.subscribe(() => {
+    const state = buildingStore.getState();
+    setStudyroom(state.studyroom);
   });
   const handleDisable = () => console.log('disable');
   const handleReservations = () => console.log('reservations');
@@ -79,16 +94,16 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = () => {
       </View>
     );
   };
-  return (
+  return studyroom ? (
     <View style={styles.wrapper}>
       <View style={styles.preview}>
         <Preview
-          name={content.name}
-          building={content.building}
-          image={content.image}
+          name={studyroom.name}
+          building={studyroom.building}
+          image={studyroom.image}
           adaptToContent
           gradient
-          active
+          active={studyroom.isactive}
         />
       </View>
       <FlatList
@@ -100,6 +115,8 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = () => {
         data={buttons}
       />
     </View>
+  ) : (
+    <View />
   );
 };
 export default StudyroomScreen;
