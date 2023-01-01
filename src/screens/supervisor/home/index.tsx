@@ -43,7 +43,6 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
-      console.log('studyroom', item);
       navigation.navigate('studyroom', {id: item._id});
     };
     return (
@@ -59,6 +58,7 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   return (
     <View>
       <FlatList
+        scrollEnabled={false}
         style={styles.wrapper}
         contentContainerStyle={styles.content}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

@@ -65,7 +65,13 @@ const SupervisorTabBar = (): JSX.Element => {
           header: props => <Header title="Home" {...props} />,
         }}
       />
-      <Tab.Screen name="Settings" component={SettingsSupervisorScreen} />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsSupervisorScreen}
+        options={{
+          header: props => <Header title="Settings" {...props} />,
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -76,6 +82,7 @@ const SupervisorNavigation = (): JSX.Element => {
     const getData = async () => {
       await supervisorSdk.getBuilding();
       await supervisorSdk.getStudyrooms();
+      await supervisorSdk.getUser();
     };
     getData();
   }, []);

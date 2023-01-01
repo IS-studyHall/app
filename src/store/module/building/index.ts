@@ -1,7 +1,7 @@
 import {createSlice, configureStore} from '@reduxjs/toolkit';
 
 const buildingSlice = createSlice({
-  name: 'building',
+  name: 'app',
   initialState: {
     buildings: [] as Building[],
     studyrooms: [] as StudyRoom[],

@@ -37,7 +37,6 @@ const LoginScreen = (): JSX.Element => {
       password: '',
     },
     onSubmit: ({username, password}) => {
-      console.log(username, password);
       authStore.dispatch(loginStudent({username, password}));
     },
   });

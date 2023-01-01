@@ -18,7 +18,6 @@ const InputImage: React.FC<InputProps> = ({value, setValue, style}) => {
       },
       response => {
         if (response.assets) {
-          console.log('image: ', response.assets[0].type);
           const prew =
             /*response.assets[0].type === 'image/jpg' ||
             response.assets[0].type === 'image/jpeg'

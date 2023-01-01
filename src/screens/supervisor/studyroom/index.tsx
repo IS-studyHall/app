@@ -7,12 +7,15 @@ import {FlatList} from 'react-native-gesture-handler';
 import Button from '../../../components/atomics/atoms/button';
 import {supervisorSdk} from '../../../utils/supervisorSdk';
 import {buildingStore} from '../../../store/module/building';
+import VerifyBottomSheet from '../../../components/atomics/organisms/confirm-bottomsheet';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 interface Item {
   item: any;
   index: number;
 }
 const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
-  route, navigation
+  route,
+  navigation,
 }) => {
   const {sizes, colors} = theme;
   const {id} = route.params;
@@ -52,39 +55,44 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     getStudyroom();
   }, [id]);
   const [studyroom, setStudyroom] = React.useState<StudyRoom>();
+  const changeStatusRef = React.useRef<BottomSheetModal>(null);
+  const deleteRef = React.useRef<BottomSheetModal>(null);
   buildingStore.subscribe(() => {
     const state = buildingStore.getState();
     setStudyroom(state.studyroom);
   });
-  const handleDisable = () => console.log('disable');
-  const handleReservations = () => console.log('reservations');
-  const handleDelete = async () => {
-    await supervisorSdk.deleteStudyroom(id);
-    navigation.goBack();
-  };
-  const handleUpdate = () => console.log('update');
-  const buttons = [
-    {
-      name: 'Sospensione',
-      color: 'secondary',
-      func: handleDisable,
-    },
-    {
-      name: 'lista prenotazioni',
-      color: 'primary',
-      func: handleReservations,
-    },
-    {
-      name: 'cancellazione',
-      color: 'primary',
-      func: handleDelete,
-    },
-    {
-      name: 'modifica',
-      color: 'secondary',
-      func: handleUpdate,
-    },
-  ];
+  const buttons = React.useMemo(() => {
+    const handleDisable = async () => {
+      changeStatusRef.current?.present();
+    };
+    const handleReservations = () => console.log('reservations');
+    const handleDelete = async () => {
+      deleteRef.current?.present();
+    };
+    const handleUpdate = () => console.log('update');
+    return [
+      {
+        name: studyroom?.isactive ? 'Sospendi' : 'Attiva',
+        color: 'secondary',
+        func: handleDisable,
+      },
+      {
+        name: 'Lista Prenotazioni',
+        color: 'primary',
+        func: handleReservations,
+      },
+      {
+        name: 'Elimina',
+        color: 'primary',
+        func: handleDelete,
+      },
+      {
+        name: 'Modifica',
+        color: 'secondary',
+        func: handleUpdate,
+      },
+    ];
+  }, [studyroom?.isactive]);
   const renderItem = ({item}: Item) => {
     return (
       <View style={styles.item}>
@@ -120,6 +128,27 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         numColumns={2}
         renderItem={renderItem}
         data={buttons}
+      />
+      <VerifyBottomSheet
+        ref={changeStatusRef}
+        title="Verifica"
+        subtitle={`sicuro di voler ${
+          studyroom.isactive ? 'sospendere' : 'attivare'
+        } l'aula studio?`}
+        confirm={async () => {
+          await supervisorSdk.changeStatusStudyroom(id);
+          await supervisorSdk.getStudyroom(id);
+        }}
+      />
+      <VerifyBottomSheet
+        ref={deleteRef}
+        title="Verifica"
+        subtitle="sicuro di voler eliminare l'aula studio?"
+        confirm={async () => {
+          await supervisorSdk.deleteStudyroom(id);
+          await supervisorSdk.getStudyrooms();
+          navigation.goBack();
+        }}
       />
     </View>
   ) : (

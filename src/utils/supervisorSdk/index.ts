@@ -6,6 +6,7 @@ import {
   setStudyroom,
   setStudyrooms,
 } from '../../store/module/building';
+import {setUser, userStore} from '../../store/module/user';
 
 class SupervisorSdk {
   private static _instance: SupervisorSdk;
@@ -70,9 +71,19 @@ class SupervisorSdk {
   }
 
   async deleteStudyroom(id: string) {
-    console.log('delete');
     await SupervisorSdk._instance.api.delete(`/studyroom/${id}`);
     console.log('STUDYROOM DELETE', id);
+  }
+
+  async changeStatusStudyroom(id: string) {
+    await SupervisorSdk._instance.api.get(`/studyroom/${id}/changestatus`);
+    console.log('STUDYROOM CHANGE STATUS', id);
+  }
+
+  async getUser() {
+    const {data} = await SupervisorSdk._instance.api.get('/user');
+    console.log('USER');
+    userStore.dispatch(setUser(data.data));
   }
 }
 

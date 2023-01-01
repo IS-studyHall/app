@@ -46,7 +46,6 @@ const AddStudyroomBottomSheet = React.forwardRef<
   // variables
   const snapPoints = React.useMemo(() => ['25%', '100%'], []);
   const buildings = buildingStore.getState().buildings;
-  console.log(buildings);
   const handleSheetChanges = React.useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);

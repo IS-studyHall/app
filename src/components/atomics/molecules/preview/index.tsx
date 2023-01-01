@@ -50,7 +50,7 @@ const Preview: React.FC<StudyroomProps> = ({
       right: sizes.spacings.m,
       paddingHorizontal: sizes.spacings.s,
       paddingVertical: sizes.spacings.xs,
-      backgroundColor: colors.primary.main,
+      backgroundColor: active ? colors.primary.main : colors.divider,
       borderRadius: sizes.borderRadius.extraBig,
     },
     bottomRight: {

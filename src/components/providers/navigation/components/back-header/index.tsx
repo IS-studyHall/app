@@ -27,7 +27,6 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
   const handleBack = () => {
     navigation.goBack();
   };
-  console.log(navigation);
   return (
     <View style={styles.wrapper}>
       <Pressable style={styles.item} onPress={handleBack}>
