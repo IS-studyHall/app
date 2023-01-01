@@ -13,11 +13,12 @@ import {buildingStore} from '../../../../store/module/building';
 import SelectOptions from '../../molecules/select-options';
 interface AddStudyroomBottomSheet {
   title: string;
+  studyroom?: StudyRoom;
 }
 const AddStudyroomBottomSheet = React.forwardRef<
   BottomSheetModal,
   AddStudyroomBottomSheet
->(({title}, ref): JSX.Element => {
+>(({title, studyroom}, ref): JSX.Element => {
   const {sizes, colors} = theme;
   title;
   const styles = StyleSheet.create({
@@ -55,13 +56,23 @@ const AddStudyroomBottomSheet = React.forwardRef<
   }, [ref]);
   const form = useForm({
     initialValues: {
-      name: '',
-      building: '',
-      floor: '',
-      seats: '',
-      image: '',
+      name: studyroom ? studyroom.name : '',
+      building: studyroom ? studyroom.building : '',
+      floor: studyroom ? studyroom.floor : '',
+      seats: studyroom?.seats ?? '',
+      image: studyroom ? studyroom.image : '',
     },
     onSubmit: async ({name, building, floor, seats, image}) => {
+      if (studyroom) {
+        await supervisorSdk.updateStudyroom(
+          studyroom._id,
+          name,
+          building,
+          floor,
+          seats,
+          image,
+        );
+      }
       await supervisorSdk.createStudyroom(name, building, floor, seats, image);
       handleClose();
     },

@@ -3,8 +3,9 @@ interface StudyRoom {
   name: string;
   building: string;
   image: string;
+  floor: string;
   seats: string;
-  timeRange: TimeRange[];
+  timeRange?: TimeRange[];
 }
 
 interface TimeRange {

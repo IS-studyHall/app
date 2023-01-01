@@ -21,4 +21,6 @@ class StudentSdk {
   }
 }
 
-export const studentSdk = new StudentSdk({apiUrl: 'http://localhost:8080'});
+export const studentSdk = new StudentSdk({
+  apiUrl: `http://${Platform.OS === 'ios' ? 'localhost' : '10.0.2.2'}:8080`,
+});

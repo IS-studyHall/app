@@ -43,7 +43,7 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
-      navigation.navigate('studyroom', {id: item._id});
+      navigation.navigate('studyroom', {id: item._id, title: item.name});
     };
     return (
       <Studyroom

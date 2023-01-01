@@ -59,6 +59,7 @@ const LoginScreen = (): JSX.Element => {
         <Input
           style={styles.input}
           value={form.values.password}
+          hideText
           setValue={form.handleChange('password')}
           placeholder="password"
         />

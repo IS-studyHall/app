@@ -9,6 +9,7 @@ import {supervisorSdk} from '../../../utils/supervisorSdk';
 import {buildingStore} from '../../../store/module/building';
 import VerifyBottomSheet from '../../../components/atomics/organisms/confirm-bottomsheet';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import AddStudyroomBottomSheet from '../../../components/atomics/organisms/add-studyroom-bottom-sheet';
 interface Item {
   item: any;
   index: number;
@@ -57,6 +58,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   const [studyroom, setStudyroom] = React.useState<StudyRoom>();
   const changeStatusRef = React.useRef<BottomSheetModal>(null);
   const deleteRef = React.useRef<BottomSheetModal>(null);
+  const updateRef = React.useRef<BottomSheetModal>(null);
   buildingStore.subscribe(() => {
     const state = buildingStore.getState();
     setStudyroom(state.studyroom);
@@ -69,7 +71,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     const handleDelete = async () => {
       deleteRef.current?.present();
     };
-    const handleUpdate = () => console.log('update');
+    const handleUpdate = () => updateRef.current?.present();
     return [
       {
         name: studyroom?.isactive ? 'Sospendi' : 'Attiva',
@@ -149,6 +151,11 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
           await supervisorSdk.getStudyrooms();
           navigation.goBack();
         }}
+      />
+      <AddStudyroomBottomSheet
+        ref={updateRef}
+        studyroom={studyroom}
+        title={''}
       />
     </View>
   ) : (

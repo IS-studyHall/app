@@ -1,4 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
+import {Platform} from 'react-native';
 import {loginSupervisor, authStore} from '../../store/module/auth';
 import {
   buildingStore,
@@ -14,6 +15,7 @@ class SupervisorSdk {
   constructor({apiUrl}: {apiUrl: string}) {
     if (!SupervisorSdk._instance) {
       SupervisorSdk._instance = this;
+      console.log('API', apiUrl);
       SupervisorSdk._instance.api = axios.create({
         baseURL: apiUrl,
       });
@@ -21,17 +23,21 @@ class SupervisorSdk {
     return SupervisorSdk._instance;
   }
   async login(email: string, password: string) {
-    const {data} = await SupervisorSdk._instance.api.post(
-      '/organization/login',
-      {
-        email,
-        password,
-      },
-    );
-    SupervisorSdk._instance.api.defaults.headers.common.Authorization =
-      data.data.token;
-    console.log('SUPERVISOR LOGIN');
-    authStore.dispatch(loginSupervisor(data.data));
+    try {
+      const {data} = await SupervisorSdk._instance.api.post(
+        '/organization/login',
+        {
+          email,
+          password,
+        },
+      );
+      SupervisorSdk._instance.api.defaults.headers.common.Authorization =
+        data.data.token;
+      console.log('SUPERVISOR LOGIN');
+      authStore.dispatch(loginSupervisor(data.data));
+    } catch (e) {
+      console.log(e);
+    }
   }
   async getBuilding() {
     const {data} = await SupervisorSdk._instance.api.get('/building/');
@@ -54,7 +60,23 @@ class SupervisorSdk {
     });
     console.log('STUDYROOM CREATE');
   }
-
+  async updateStudyroom(
+    id: string,
+    name: string,
+    building: string,
+    floor: string,
+    seats: string,
+    image: string,
+  ) {
+    await SupervisorSdk._instance.api.patch(`/studyroom/${id}`, {
+      name,
+      building,
+      floor,
+      seats,
+      image,
+    });
+    console.log('STUDYROOM UPDATE');
+  }
   async getStudyrooms() {
     const {data} = await SupervisorSdk._instance.api.get(
       '/studyroom/supervisor',
@@ -88,5 +110,5 @@ class SupervisorSdk {
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://localhost:8080',
+  apiUrl: `http://${Platform.OS === 'ios' ? 'localhost' : '10.0.2.2'}:8080`,
 });

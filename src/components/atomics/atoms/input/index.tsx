@@ -8,6 +8,7 @@ interface InputProps {
   setValue: (e: any) => void; //gestire il tipo di e in modo adeguato
   placeholder?: string;
   style?: ViewStyle;
+  hideText?: boolean;
 }
 const Input: React.FC<InputProps> = ({
   type,
@@ -15,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   setValue,
   placeholder,
   style,
+  hideText,
 }) => {
   switch (type) {
     case 'image':
@@ -33,6 +35,7 @@ const Input: React.FC<InputProps> = ({
           setValue={setValue}
           placeholder={placeholder}
           style={style}
+          hideText={hideText}
         />
       );
   }
