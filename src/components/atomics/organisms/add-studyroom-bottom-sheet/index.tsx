@@ -12,15 +12,14 @@ import {supervisorSdk} from '../../../../utils/supervisorSdk';
 import {buildingStore} from '../../../../store/module/building';
 import SelectOptions from '../../molecules/select-options';
 interface AddStudyroomBottomSheet {
-  title: string;
   studyroom?: StudyRoom;
+  onSubmit?: () => void;
 }
 const AddStudyroomBottomSheet = React.forwardRef<
   BottomSheetModal,
   AddStudyroomBottomSheet
->(({title, studyroom}, ref): JSX.Element => {
+>(({studyroom, onSubmit}, ref): JSX.Element => {
   const {sizes, colors} = theme;
-  title;
   const styles = StyleSheet.create({
     contentContainer: {
       flex: 1,
@@ -52,14 +51,16 @@ const AddStudyroomBottomSheet = React.forwardRef<
   }, []);
   const handleClose = React.useCallback(async () => {
     (ref as React.RefObject<BottomSheetModalMethods>).current?.close();
-    await supervisorSdk.getStudyrooms();
-  }, [ref]);
+    if (onSubmit) {
+      onSubmit();
+    }
+  }, [onSubmit, ref]);
   const form = useForm({
     initialValues: {
       name: studyroom ? studyroom.name : '',
       building: studyroom ? studyroom.building : '',
-      floor: studyroom ? studyroom.floor : '',
-      seats: studyroom?.seats ?? '',
+      floor: studyroom ? studyroom.floor.toString() : '',
+      seats: studyroom?.seats.toString() ?? '',
       image: studyroom ? studyroom.image : '',
     },
     onSubmit: async ({name, building, floor, seats, image}) => {
@@ -68,12 +69,18 @@ const AddStudyroomBottomSheet = React.forwardRef<
           studyroom._id,
           name,
           building,
-          floor,
-          seats,
+          floor.toString(),
+          seats.toString(),
           image,
         );
       }
-      await supervisorSdk.createStudyroom(name, building, floor, seats, image);
+      await supervisorSdk.createStudyroom(
+        name,
+        building,
+        floor.toString(),
+        seats.toString(),
+        image,
+      );
       handleClose();
     },
   });

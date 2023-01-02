@@ -6,7 +6,7 @@ import theme from '../../../components/providers/theme/defaultTheme';
 import {useFormik as useForm} from 'formik';
 import Layout from '../../../components/providers/layout';
 import Text from '../../../components/atomics/atoms/text';
-import {loginStudent, authStore} from '../../../store/module/auth';
+import {studentSdk} from '../../../utils/studentSdk';
 const LoginScreen = (): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -37,7 +37,7 @@ const LoginScreen = (): JSX.Element => {
       password: '',
     },
     onSubmit: ({username, password}) => {
-      authStore.dispatch(loginStudent({username, password}));
+      studentSdk.login(username, password);
     },
   });
   return (
@@ -61,6 +61,7 @@ const LoginScreen = (): JSX.Element => {
           value={form.values.password}
           setValue={form.handleChange('password')}
           placeholder="password"
+          hideText={true}
         />
         <Button
           title="Accedi"

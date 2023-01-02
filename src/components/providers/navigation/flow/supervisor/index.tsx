@@ -46,7 +46,10 @@ const TabBarSupervisorAdapter = ({children}: AdapterProps) => {
         status="secondary"
         onPress={handleAddStudyroom}
       />
-      <AddStudyroomBottomSheet ref={bottomSheetRef} title="aula studio" />
+      <AddStudyroomBottomSheet
+        ref={bottomSheetRef}
+        onSubmit={async () => await supervisorSdk.getStudyrooms()}
+      />
     </View>
   );
 };
@@ -62,14 +65,14 @@ const SupervisorTabBar = (): JSX.Element => {
         name="Home"
         component={HomeSupervisorScreen}
         options={{
-          header: props => <Header title="Home" {...props} />,
+          header: props => <Header title="Aule Studio" {...props} />,
         }}
       />
       <Tab.Screen
         name="Settings"
         component={SettingsSupervisorScreen}
         options={{
-          header: props => <Header title="Settings" {...props} />,
+          header: props => <Header title="Impostazioni" {...props} />,
         }}
       />
     </Tab.Navigator>
@@ -100,7 +103,7 @@ const SupervisorNavigation = (): JSX.Element => {
         name="studyroom"
         component={StudyroomSupervisorScreen}
         options={{
-          header: props => <BackHeader {...props} />,
+          header: props => <BackHeader title="Aula Studio" {...props} />,
         }}
       />
     </SupervisorStackNavigator.Navigator>

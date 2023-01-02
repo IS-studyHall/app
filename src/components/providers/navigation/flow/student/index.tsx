@@ -11,6 +11,7 @@ import Header from '../../components/header';
 import {createStackNavigator} from '@react-navigation/stack';
 import BackHeader from '../../components/back-header';
 import theme from '../../../theme/defaultTheme';
+import {studentSdk} from '../../../../../utils/studentSdk';
 const Tab = createBottomTabNavigator();
 const StudentStackNavigator = createStackNavigator();
 
@@ -44,6 +45,13 @@ const StudentTabBar = (): JSX.Element => {
 
 const StudentNavigation = (): JSX.Element => {
   const {colors} = theme;
+  React.useEffect(() => {
+    const getData = async () => {
+      await studentSdk.getUser();
+      await studentSdk.getStudyrooms();
+    };
+    getData();
+  }, []);
   return (
     <StudentStackNavigator.Navigator
       screenOptions={{

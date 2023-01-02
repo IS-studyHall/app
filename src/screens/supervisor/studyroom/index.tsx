@@ -155,7 +155,10 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       <AddStudyroomBottomSheet
         ref={updateRef}
         studyroom={studyroom}
-        title={''}
+        onSubmit={async () => {
+          await supervisorSdk.getStudyroom(id);
+          await supervisorSdk.getStudyrooms();
+        }}
       />
     </View>
   ) : (

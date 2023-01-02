@@ -51,6 +51,7 @@ class SupervisorSdk {
     seats: string,
     image: string,
   ) {
+    console.log('create');
     await SupervisorSdk._instance.api.post('/studyroom/create', {
       name,
       building,

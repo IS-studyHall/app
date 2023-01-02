@@ -10,7 +10,9 @@ const authSlice = createSlice({
   },
   reducers: {
     loginStudent: (state, action) => {
-      console.log(action);
+      const user: User = action.payload;
+      state.email = user.email;
+      state.username = user.username;
       state.logged = true;
       state.supervisor = false;
     },
@@ -24,6 +26,8 @@ const authSlice = createSlice({
     logout: state => {
       state.logged = false;
       state.supervisor = false;
+      state.email = '';
+      state.username = '';
     },
   },
 });

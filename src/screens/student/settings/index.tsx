@@ -4,6 +4,7 @@ import Card from '../../../components/atomics/atoms/card';
 import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
 import {logout, authStore} from '../../../store/module/auth';
+import {userStore} from '../../../store/module/user';
 interface Item {
   textLeft: string;
   textRight: string;
@@ -43,15 +44,14 @@ const SettingsScreen = () => {
       </View>
     );
   };
+  const user = userStore.getState().user;
   const handleLogout = () => {
     authStore.dispatch(logout());
   };
   return (
     <View style={styles.wrapper}>
       <Card>
-        <RenderItem textLeft="Nome" textRight="Michele" />
-        <RenderItem textLeft="Cognome" textRight="Mattiello" />
-        <RenderItem textLeft="Matricola" textRight="0512110185" last />
+        <RenderItem textLeft="Username" textRight={user.username} last />
       </Card>
       <Pressable style={styles.logout} onPress={handleLogout}>
         <Text style={styles.text} type="p1" color="danger">
