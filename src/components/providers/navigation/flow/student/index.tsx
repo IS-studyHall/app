@@ -47,9 +47,11 @@ const StudentNavigation = (): JSX.Element => {
   const {colors} = theme;
   React.useEffect(() => {
     const getData = async () => {
-      await studentSdk.getUser();
+      await studentSdk.getBuilding();
       await studentSdk.getStudyrooms();
+      await studentSdk.getUser();
     };
+    console.log('FETCH STUDENT DATA');
     getData();
   }, []);
   return (

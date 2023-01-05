@@ -3,8 +3,8 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import Text from '../../../../../components/atomics/atoms/text';
 import theme from '../../../../../components/providers/theme/defaultTheme';
 interface DateRangeProps {
-  value: number | undefined;
-  setValue: React.Dispatch<React.SetStateAction<number | undefined>>;
+  value: Date | undefined;
+  setValue: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
 interface Item {
   index: number;
@@ -17,22 +17,26 @@ const DateRange: React.FC<DateRangeProps> = ({value, setValue}) => {
       marginBottom: sizes.spacings.s,
     },
   });
-  const today = React.useMemo(() => new Date(), []);
+  const formatDate = (date: Date) => {
+    date.setHours(0, 0, 0, 0);
+    return date;
+  };
+  const today = React.useMemo(() => formatDate(new Date()), []);
   React.useEffect(() => {
-    setValue(today.getDate());
+    setValue(today);
   }, [setValue, today]);
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const RenderItem = ({index}: Item) => {
-    const day = new Date();
+    const day = formatDate(new Date());
     day.setDate(day.getDate() - (day.getDay() - 1 - index));
     const itemStyles = StyleSheet.create({
       item: {
         flex: 1,
         alignItems: 'center',
         backgroundColor:
-          day.getDate() === today.getDate()
+          day.toString() === today.toString()
             ? colors.primary.main
-            : value === day.getDate()
+            : value?.toString() === day.toString()
             ? colors.secondary.main
             : undefined,
         borderRadius: sizes.borderRadius.extraBig,
@@ -45,7 +49,7 @@ const DateRange: React.FC<DateRangeProps> = ({value, setValue}) => {
     });
     const handlePress = () => {
       if (today <= day) {
-        setValue(day.getDate());
+        setValue(day);
       }
     };
     return (

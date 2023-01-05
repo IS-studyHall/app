@@ -1,15 +1,21 @@
+import {ParamListBase} from '@react-navigation/native';
 import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Button from '../../../components/atomics/atoms/button';
 import Preview from '../../../components/atomics/molecules/preview';
 import theme from '../../../components/providers/theme/defaultTheme';
+import {buildingStore} from '../../../store/module/building';
+import {studentSdk} from '../../../utils/studentSdk';
 import DateRange from './components/date-range';
 import TimeRange from './components/time-range';
-import {content} from './data';
+import {timeRange} from '../../../utils/studentSdk/data';
 interface Item {
   item: TimeRange;
 }
-const StudyroomScreen = () => {
+const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
+  route,
+}) => {
+  const {id} = route.params;
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     wrapper: {
@@ -35,10 +41,26 @@ const StudyroomScreen = () => {
       paddingBottom: 2 * sizes.spacings.xxl,
     },
   });
-  const [day, setDay] = React.useState<number>();
+  React.useEffect(() => {
+    const getStudyroom = async () => {
+      await studentSdk.getStudyroom(id);
+    };
+    getStudyroom();
+  }, [id]);
+  const [studyroom, setStudyroom] = React.useState<StudyRoom>();
+  const [buildings, setBuildings] = React.useState<Building[]>();
+  buildingStore.subscribe(() => {
+    const {studyroom: studyroomState, buildings: buildingsState} =
+      buildingStore.getState();
+    setStudyroom(studyroomState);
+    setBuildings(buildingsState);
+  });
+  const [date, setDate] = React.useState<Date>();
   const [time, setTime] = React.useState<string>();
   const handleSubmit = () => {
-    console.log('submit');
+    if (studyroom && date && time) {
+      studentSdk.createReservation(studyroom?._id, date, time);
+    }
   };
   const renderTime = ({item}: Item) => {
     const handleSelected = () => {
@@ -48,7 +70,7 @@ const StudyroomScreen = () => {
       <TimeRange
         start={item.start}
         end={item.end}
-        seats={content.seats}
+        seats={studyroom?.seats.toString() ?? ''}
         seatsAvailable={item.seatsAvailable}
         style={styles.timeRange}
         selected={item.key === time}
@@ -60,23 +82,25 @@ const StudyroomScreen = () => {
     <View style={styles.wrapper}>
       <View style={styles.preview}>
         <Preview
-          name={content.name}
-          building={content.building}
-          image={content.image}
+          name={studyroom?.name}
+          building={`Edificio ${
+            buildings?.find(b => b._id === studyroom?.building)?.name
+          }`}
+          image={studyroom?.image}
           adaptToContent
           gradient
-          active
+          active={studyroom?.isactive}
           favoriteButton
         />
       </View>
-      <DateRange value={day} setValue={setDay} />
+      <DateRange value={date} setValue={setDate} />
       <FlatList
         contentContainerStyle={styles.list}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         scrollEnabled={false}
         numColumns={2}
         renderItem={renderTime}
-        data={content.timeRange}
+        data={timeRange}
       />
       <Button
         style={styles.button}

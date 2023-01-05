@@ -1,8 +1,14 @@
 import axios, {AxiosInstance} from 'axios';
 import {authStore, loginStudent} from '../../store/module/auth';
-import {buildingStore, setStudyrooms} from '../../store/module/building';
+import {
+  buildingStore,
+  setBuildings,
+  setStudyroom,
+  setStudyrooms,
+  setStudyroomsGroupByBuildings,
+} from '../../store/module/building';
 import {setUser, userStore} from '../../store/module/user';
-
+import {timeRange} from './data';
 class StudentSdk {
   private static _instance: StudentSdk;
   private api!: AxiosInstance;
@@ -30,6 +36,11 @@ class StudentSdk {
       console.log(e);
     }
   }
+  async getBuilding() {
+    const {data} = await StudentSdk._instance.api.get('/building/');
+    console.log('BUILDING READ', data.data);
+    buildingStore.dispatch(setBuildings(data.data));
+  }
   async getUser() {
     const {data} = await StudentSdk._instance.api.get('/student');
     console.log('USER');
@@ -37,11 +48,26 @@ class StudentSdk {
   }
   async getStudyrooms() {
     const {data} = await StudentSdk._instance.api.get('/studyroom');
-    console.log('STUDYROOMS READ', data);
-    buildingStore.dispatch(setStudyrooms(data.data));
+    console.log('STUDYROOMS READ', data.data[0].studyrooms);
+    buildingStore.dispatch(setStudyroomsGroupByBuildings(data.data));
+  }
+  async getStudyroom(id: string) {
+    console.log(id);
+    const {data} = await StudentSdk._instance.api.get(`/studyroom/${id}`);
+    buildingStore.dispatch(setStudyroom(data.data));
+    console.log('STUDYROOM READ', data);
+  }
+  async createReservation(id: string, date: Date, key: string) {
+    const range = timeRange.find(t => t.key === key);
+    const {data} = await StudentSdk._instance.api.post('/reservation/create', {
+      start: range?.start,
+      end: range?.end,
+      date: date,
+    });
+    console.log('RESERVATION CREATE', data);
   }
 }
 
 export const studentSdk = new StudentSdk({
-  apiUrl: `http://${Platform.OS === 'ios' ? 'localhost' : '10.0.2.2'}:8080`,
+  apiUrl: 'http://192.168.1.110:8080',
 });

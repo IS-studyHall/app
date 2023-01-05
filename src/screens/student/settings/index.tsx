@@ -48,10 +48,11 @@ const SettingsScreen = () => {
   const handleLogout = () => {
     authStore.dispatch(logout());
   };
+  console.log(user);
   return (
     <View style={styles.wrapper}>
       <Card>
-        <RenderItem textLeft="Username" textRight={user.username} last />
+        <RenderItem textLeft="username" textRight={user.username} last />
       </Card>
       <Pressable style={styles.logout} onPress={handleLogout}>
         <Text style={styles.text} type="p1" color="danger">

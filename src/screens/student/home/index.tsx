@@ -3,10 +3,10 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
 import Studyroom from '../../../components/atomics/molecules/preview';
-import {content} from './data';
 import {ParamListBase} from '@react-navigation/native';
+import {buildingStore} from '../../../store/module/building';
 interface RenderBuilding {
-  item: Building;
+  item: StudyroomsGroupByBuilding;
 }
 interface renderStudyRoom {
   item: Studyroom;
@@ -33,13 +33,25 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
       marginLeft: sizes.spacings.m,
     },
   });
+  const [studyroomsGroupByBuildings, setstudyroomsGroupByBuildings] =
+    React.useState<StudyroomsGroupByBuilding[]>();
+  const [buildings, setBuildings] = React.useState<Building[]>();
+  buildingStore.subscribe(() => {
+    setstudyroomsGroupByBuildings(
+      buildingStore.getState().studyroomsGroupByBuildings,
+    );
+    const b = buildingStore.getState().buildings;
+    console.log(b);
+    setBuildings(b);
+  });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
-      navigation.navigate('studyroom');
+      navigation.navigate('studyroom', {id: item._id});
     };
+    console.log('IMAGE:', item.image);
     return (
       <Studyroom
-        key={item.key}
+        key={item._id}
         name={item.name}
         image={item.image}
         style={styles.studyRoom}
@@ -51,22 +63,24 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     return (
       <View>
         <Text style={styles.text} type="h1" color="secondary">
-          {item.name}
+          {`Edificio ${buildings?.find(b => b._id === item._id)?.name}`}
         </Text>
         <FlatList
           style={styles.building}
           showsHorizontalScrollIndicator={false}
           horizontal
-          data={item.studyroom}
+          data={item.studyrooms}
           renderItem={renderStudyRoom}
         />
       </View>
     );
   };
+  console.log(studyroomsGroupByBuildings, buildings);
   return (
     <FlatList
+      keyExtractor={o => o._id}
       style={styles.wrapper}
-      data={content}
+      data={studyroomsGroupByBuildings}
       renderItem={renderBuilding}
     />
   );

@@ -1,6 +1,6 @@
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import * as React from 'react';
-import {Pressable, StyleSheet, View, ViewStyle} from 'react-native';
+import {Keyboard, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import theme from '../../../providers/theme/defaultTheme';
 import Text from '../../atoms/text';
 import OptionsBottomSheet from '../../organisms/options-bottomsheet';
@@ -32,6 +32,8 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
   });
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const handleChooseBuildings = () => {
+    Keyboard.dismiss();
+    console.log('keyboard dismiss');
     bottomSheetRef.current?.present();
   };
   const building = React.useMemo(() => {

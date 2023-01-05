@@ -5,9 +5,9 @@ import Text from '../../atoms/text';
 import theme from '../../../providers/theme/defaultTheme';
 import Icon from 'react-native-vector-icons/AntDesign';
 interface StudyroomProps {
-  name: string;
+  name?: string;
   building?: string;
-  image: string;
+  image?: string;
   style?: ViewStyle | ViewStyle[];
   gradient?: boolean;
   adaptToContent?: boolean;

@@ -6,6 +6,7 @@ const buildingSlice = createSlice({
     buildings: [] as Building[],
     studyrooms: [] as StudyRoom[],
     studyroom: {} as StudyRoom,
+    studyroomsGroupByBuildings: [] as StudyroomsGroupByBuilding[],
   },
   reducers: {
     setBuildings: (state, action: Action<Building[]>) => {
@@ -17,11 +18,21 @@ const buildingSlice = createSlice({
     setStudyroom: (state, action: Action<StudyRoom>) => {
       state.studyroom = action.payload;
     },
+    setStudyroomsGroupByBuildings: (
+      state,
+      action: Action<StudyroomsGroupByBuilding[]>,
+    ) => {
+      state.studyroomsGroupByBuildings = action.payload;
+    },
   },
 });
 
-export const {setBuildings, setStudyrooms, setStudyroom} =
-  buildingSlice.actions;
+export const {
+  setBuildings,
+  setStudyrooms,
+  setStudyroom,
+  setStudyroomsGroupByBuildings,
+} = buildingSlice.actions;
 
 export const buildingStore = configureStore({
   reducer: buildingSlice.reducer,

@@ -14,6 +14,7 @@ const LoginScreen = (): JSX.Element => {
       width: '80%',
       flexDirection: 'column',
       alignSelf: 'center',
+      marginTop: 1.5 * sizes.spacings.xxl,
     },
     input: {
       marginTop: sizes.spacings.s,

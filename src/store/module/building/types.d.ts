@@ -13,3 +13,14 @@ interface Coords {
   lat: string;
   long: string;
 }
+
+interface StudyroomsGroupByBuilding {
+  _id: string;
+  studyrooms: Studyroom[];
+}
+
+interface Studyroom {
+  _id: string;
+  name: string;
+  image: string;
+}
