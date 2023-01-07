@@ -9,11 +9,13 @@ import {studentSdk} from '../../../utils/studentSdk';
 import DateRange from './components/date-range';
 import TimeRange from './components/time-range';
 import {timeRange} from '../../../utils/studentSdk/data';
+import Loader from '../../../components/atomics/atoms/loader';
 interface Item {
   item: TimeRange;
 }
 const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   route,
+  navigation,
 }) => {
   const {id} = route.params;
   const {sizes, colors} = theme;
@@ -49,17 +51,28 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   }, [id]);
   const [studyroom, setStudyroom] = React.useState<StudyRoom>();
   const [buildings, setBuildings] = React.useState<Building[]>();
+  const [favorites, setFavorites] = React.useState<Favorite[]>();
+  const [loading, setLoading] = React.useState<boolean>(true);
   buildingStore.subscribe(() => {
-    const {studyroom: studyroomState, buildings: buildingsState} =
-      buildingStore.getState();
+    const {
+      studyroom: studyroomState,
+      buildings: buildingsState,
+      loading: load,
+      favorites: favoritesState,
+    } = buildingStore.getState();
     setStudyroom(studyroomState);
     setBuildings(buildingsState);
+    setFavorites(favoritesState);
+    setLoading(load);
   });
   const [date, setDate] = React.useState<Date>();
   const [time, setTime] = React.useState<string>();
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (studyroom && date && time) {
-      studentSdk.createReservation(studyroom?._id, date, time);
+      await studentSdk.createReservation(studyroom._id, date, time);
+      await studentSdk.getActiveReservations();
+      await studentSdk.getExpiredReservations();
+      navigation.goBack();
     }
   };
   const renderTime = ({item}: Item) => {
@@ -70,7 +83,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       <TimeRange
         start={item.start}
         end={item.end}
-        seats={studyroom?.seats.toString() ?? ''}
+        seats={studyroom?.seats}
         seatsAvailable={item.seatsAvailable}
         style={styles.timeRange}
         selected={item.key === time}
@@ -81,17 +94,26 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   return (
     <View style={styles.wrapper}>
       <View style={styles.preview}>
-        <Preview
-          name={studyroom?.name}
-          building={`Edificio ${
-            buildings?.find(b => b._id === studyroom?.building)?.name
-          }`}
-          image={studyroom?.image}
-          adaptToContent
-          gradient
-          active={studyroom?.isactive}
-          favoriteButton
-        />
+        {studyroom ? (
+          <Preview
+            id={studyroom._id}
+            name={studyroom.name}
+            building={`Edificio ${
+              buildings?.find(b => b._id === studyroom.building)?.name
+            }`}
+            image={studyroom.image}
+            active={studyroom.isactive}
+            favoriteState={
+              favorites
+                ? favorites.findIndex(o => o.studyroom === studyroom._id) > -1
+                : undefined
+            }
+            adaptToContent
+            gradient
+          />
+        ) : (
+          <Loader />
+        )}
       </View>
       <DateRange value={date} setValue={setDate} />
       <FlatList
@@ -106,6 +128,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         style={styles.button}
         title="Prenota"
         status="secondary"
+        loading={loading}
         onPress={handleSubmit}
       />
     </View>

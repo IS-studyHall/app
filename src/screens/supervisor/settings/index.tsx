@@ -46,7 +46,6 @@ const SettingsScreen = () => {
   };
   const user = userStore.getState().user;
   const handleLogout = () => authStore.dispatch(logout());
-  console.log('user', user);
   return (
     <View style={styles.wrapper}>
       <Card>

@@ -4,7 +4,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import Text from '../../atoms/text';
 import theme from '../../../providers/theme/defaultTheme';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {studentSdk} from '../../../../utils/studentSdk';
 interface StudyroomProps {
+  id?: string;
   name?: string;
   building?: string;
   image?: string;
@@ -12,10 +14,11 @@ interface StudyroomProps {
   gradient?: boolean;
   adaptToContent?: boolean;
   active?: boolean;
-  favoriteButton?: boolean;
+  favoriteState?: boolean;
   onPress?: () => void;
 }
 const Preview: React.FC<StudyroomProps> = ({
+  id,
   name,
   building,
   image,
@@ -23,7 +26,7 @@ const Preview: React.FC<StudyroomProps> = ({
   gradient = true,
   adaptToContent = false,
   active,
-  favoriteButton = false,
+  favoriteState = undefined,
   onPress,
 }) => {
   const {sizes, colors} = theme;
@@ -65,9 +68,17 @@ const Preview: React.FC<StudyroomProps> = ({
       bottom: 0,
     },
   });
-  const [favorite, setFavorite] = React.useState<boolean>(false);
-  const handlePress = () => {
-    setFavorite(old => !old);
+  const handlePress = async () => {
+    if (id && favoriteState !== undefined) {
+      if (favoriteState === false) {
+        await studentSdk.createFavorite(id);
+        await studentSdk.getFavorites();
+      } else if (favoriteState === true) {
+        await studentSdk.deleteFavorite(id);
+        await studentSdk.getFavorites();
+      }
+    }
+    //setFavorite(old => !old);
   };
   const title = React.useMemo(() => {
     return building ? `${building} - ${name}` : `${name}`;
@@ -94,10 +105,10 @@ const Preview: React.FC<StudyroomProps> = ({
             </Text>
           </View>
         ) : null}
-        {favoriteButton ? (
+        {favoriteState !== undefined ? (
           <View style={styles.bottomRight}>
             <Pressable onPress={handlePress}>
-              {favorite ? (
+              {favoriteState ? (
                 <Icon disabled name="heart" color="white" size={25} />
               ) : (
                 <Icon disabled name="hearto" color="white" size={25} />

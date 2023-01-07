@@ -15,12 +15,16 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
+      alignContent: 'center',
+      alignSelf: 'center',
       backgroundColor: colors.primary.main,
-      paddingBottom: sizes.spacings.m,
+      //paddingBottom: ,
       paddingHorizontal: sizes.spacings.m,
     },
     item: {
+      padding: sizes.spacings.m,
       width: '33.33%',
+      height: 'auto',
       textAlign: 'center',
     },
   });

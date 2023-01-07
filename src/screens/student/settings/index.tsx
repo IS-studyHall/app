@@ -48,7 +48,6 @@ const SettingsScreen = () => {
   const handleLogout = () => {
     authStore.dispatch(logout());
   };
-  console.log(user);
   return (
     <View style={styles.wrapper}>
       <Card>

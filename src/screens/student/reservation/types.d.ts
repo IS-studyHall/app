@@ -1,8 +1,8 @@
 interface Reservation {
-  key: string;
+  _id: string;
   building: string;
   studyroom: string;
-  date: string;
+  date: number;
   start: string;
   end: string;
   lat: string;

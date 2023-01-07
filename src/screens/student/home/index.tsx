@@ -36,17 +36,20 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   const [studyroomsGroupByBuildings, setstudyroomsGroupByBuildings] =
     React.useState<StudyroomsGroupByBuilding[]>();
   const [buildings, setBuildings] = React.useState<Building[]>();
+  const [favorites, setFavorites] = React.useState<Favorite[]>();
   buildingStore.subscribe(() => {
-    setstudyroomsGroupByBuildings(
-      buildingStore.getState().studyroomsGroupByBuildings,
-    );
-    const b = buildingStore.getState().buildings;
-    console.log(b);
-    setBuildings(b);
+    const {
+      studyroomsGroupByBuildings: studyroomsState,
+      favorites: favoritesState,
+      buildings: buildingsState,
+    } = buildingStore.getState();
+    setstudyroomsGroupByBuildings(studyroomsState);
+    setBuildings(buildingsState);
+    setFavorites(favoritesState);
   });
   const renderStudyRoom = ({item}: renderStudyRoom) => {
     const handlePress = () => {
-      navigation.navigate('studyroom', {id: item._id});
+      navigation.navigate('studyroom', {id: item._id, title: item.name});
     };
     console.log('IMAGE:', item.image);
     return (
@@ -55,6 +58,11 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
         name={item.name}
         image={item.image}
         style={styles.studyRoom}
+        favoriteState={
+          favorites
+            ? favorites.findIndex(o => o.studyroom === item._id) > -1
+            : undefined
+        }
         onPress={handlePress}
       />
     );
@@ -75,7 +83,6 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
       </View>
     );
   };
-  console.log(studyroomsGroupByBuildings, buildings);
   return (
     <FlatList
       keyExtractor={o => o._id}

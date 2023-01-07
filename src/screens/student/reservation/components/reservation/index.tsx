@@ -3,13 +3,14 @@ import {Linking, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import Card from '../../../../../components/atomics/atoms/card';
 import Text from '../../../../../components/atomics/atoms/text';
 import theme from '../../../../../components/providers/theme/defaultTheme';
+import {studentSdk} from '../../../../../utils/studentSdk';
 interface Item {
   textLeft: string;
   textRight: string;
   last?: boolean;
 }
 interface ReservationProps {
-  key: string;
+  id: string;
   building: string;
   studyroom: string;
   date: string;
@@ -21,6 +22,7 @@ interface ReservationProps {
   footer?: boolean;
 }
 const Reservation: React.FC<ReservationProps> = ({
+  id,
   building,
   studyroom,
   date,
@@ -71,7 +73,11 @@ const Reservation: React.FC<ReservationProps> = ({
     const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     Linking.openURL(url);
   };
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    await studentSdk.deleteReservation(id);
+    await studentSdk.getActiveReservations();
+    await studentSdk.getExpiredReservations();
+  };
   return (
     <Card style={styles.card}>
       <RenderItem textLeft="Nome" textRight={`${building} ${studyroom}`} />

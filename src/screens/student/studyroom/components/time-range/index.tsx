@@ -6,7 +6,7 @@ import theme from '../../../../../components/providers/theme/defaultTheme';
 interface TimeRangeProps {
   start: string;
   end: string;
-  seats: string;
+  seats?: string;
   seatsAvailable: string;
   selected?: boolean;
   onPress?: () => void;

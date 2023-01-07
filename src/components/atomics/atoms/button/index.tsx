@@ -1,14 +1,22 @@
 import * as React from 'react';
 import {Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import theme from '../../../providers/theme/defaultTheme';
+import Loader from '../loader';
 import Text from '../text';
 interface ButtonProps {
   title: string;
+  loading?: boolean;
   onPress: () => void;
   status?: 'default' | 'primaryOutlined' | 'secondary' | 'secondaryOutlined';
   style?: ViewStyle;
 }
-const Button: React.FC<ButtonProps> = ({title, onPress, status, style}) => {
+const Button: React.FC<ButtonProps> = ({
+  title,
+  loading,
+  onPress,
+  status,
+  style,
+}) => {
   const {sizes, colors} = theme;
   const buttonColor = React.useMemo(() => {
     switch (status) {
@@ -39,13 +47,17 @@ const Button: React.FC<ButtonProps> = ({title, onPress, status, style}) => {
     },
   });
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={loading ? undefined : onPress}>
       <View style={[styles.wrapper, buttonColor, style]}>
-        <Text
-          type="p1"
-          color={status?.includes('Outlined') ? 'title' : 'light'}>
-          {title}
-        </Text>
+        {loading ? (
+          <Loader status="light" />
+        ) : (
+          <Text
+            type="p1"
+            color={status?.includes('Outlined') ? 'title' : 'light'}>
+            {title}
+          </Text>
+        )}
       </View>
     </Pressable>
   );

@@ -9,3 +9,8 @@ interface Studyroom {
   name: string;
   image: string;
 }
+
+interface Favorite {
+  _id: string;
+  studyroom: string;
+}

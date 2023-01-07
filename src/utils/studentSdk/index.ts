@@ -3,9 +3,14 @@ import {authStore, loginStudent} from '../../store/module/auth';
 import {
   buildingStore,
   setBuildings,
+  setLoading,
+  setReservations,
   setStudyroom,
   setStudyrooms,
   setStudyroomsGroupByBuildings,
+  setFavorites,
+  setActiveReservations,
+  setExpiredReservations,
 } from '../../store/module/building';
 import {setUser, userStore} from '../../store/module/user';
 import {timeRange} from './data';
@@ -37,37 +42,85 @@ class StudentSdk {
     }
   }
   async getBuilding() {
+    buildingStore.dispatch(setLoading(true));
     const {data} = await StudentSdk._instance.api.get('/building/');
     console.log('BUILDING READ', data.data);
     buildingStore.dispatch(setBuildings(data.data));
   }
   async getUser() {
+    buildingStore.dispatch(setLoading(true));
     const {data} = await StudentSdk._instance.api.get('/student');
     console.log('USER');
     userStore.dispatch(setUser(data.data));
   }
   async getStudyrooms() {
+    buildingStore.dispatch(setLoading(true));
     const {data} = await StudentSdk._instance.api.get('/studyroom');
     console.log('STUDYROOMS READ', data.data[0].studyrooms);
     buildingStore.dispatch(setStudyroomsGroupByBuildings(data.data));
   }
+  async getAllStudyrooms() {
+    buildingStore.dispatch(setLoading(true));
+    const {data} = await StudentSdk._instance.api.get('/studyroom/all');
+    console.log('STUDYROOMS READ', data.data[0].studyrooms);
+    buildingStore.dispatch(setStudyrooms(data.data));
+  }
   async getStudyroom(id: string) {
-    console.log(id);
+    buildingStore.dispatch(setLoading(true));
     const {data} = await StudentSdk._instance.api.get(`/studyroom/${id}`);
-    buildingStore.dispatch(setStudyroom(data.data));
     console.log('STUDYROOM READ', data);
+    buildingStore.dispatch(setStudyroom(data.data));
   }
   async createReservation(id: string, date: Date, key: string) {
     const range = timeRange.find(t => t.key === key);
+    console.log('reservation params', id, date.toISOString(), key, range);
     const {data} = await StudentSdk._instance.api.post('/reservation/create', {
       start: range?.start,
       end: range?.end,
-      date: date,
+      date: date.toUTCString(),
+      id: id,
     });
     console.log('RESERVATION CREATE', data);
   }
+  async getReservations() {
+    buildingStore.dispatch(setLoading(true));
+    const {data} = await StudentSdk._instance.api.get('/reservation');
+    console.log('RESERVATION READ', data);
+    buildingStore.dispatch(setReservations(data.data));
+  }
+  async getActiveReservations() {
+    buildingStore.dispatch(setLoading(true));
+    const {data} = await StudentSdk._instance.api.get('/reservation/active');
+    console.log('RESERVATION READ', data);
+    buildingStore.dispatch(setActiveReservations(data.data));
+  }
+  async getExpiredReservations() {
+    buildingStore.dispatch(setLoading(true));
+    const {data} = await StudentSdk._instance.api.get('/reservation/expired');
+    console.log('RESERVATION READ', data);
+    buildingStore.dispatch(setExpiredReservations(data.data));
+  }
+  async deleteReservation(id: string) {
+    const {data} = await StudentSdk._instance.api.delete(`/reservation/${id}`);
+    console.log('RESERVATION DELETE', data);
+  }
+  async createFavorite(id: string) {
+    console.log('create');
+    const {data} = await StudentSdk._instance.api.get(`/favorite/${id}/create`);
+    console.log('FAVORITE CREATE', data);
+  }
+  async deleteFavorite(id: string) {
+    console.log('delete');
+    const {data} = await StudentSdk._instance.api.delete(`/favorite/${id}`);
+    console.log('FAVORITE DELETE', data);
+  }
+  async getFavorites() {
+    buildingStore.dispatch(setLoading(true));
+    const {data} = await StudentSdk._instance.api.get('/favorite');
+    console.log('FAVORITE READ', data);
+    buildingStore.dispatch(setFavorites(data.data));
+  }
 }
-
 export const studentSdk = new StudentSdk({
   apiUrl: 'http://192.168.1.110:8080',
 });

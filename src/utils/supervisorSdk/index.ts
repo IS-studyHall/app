@@ -1,5 +1,4 @@
 import axios, {AxiosInstance} from 'axios';
-import {Platform} from 'react-native';
 import {loginSupervisor, authStore} from '../../store/module/auth';
 import {
   buildingStore,
