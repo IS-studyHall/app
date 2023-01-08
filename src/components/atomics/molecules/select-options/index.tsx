@@ -8,6 +8,7 @@ interface SelectOptionsProps {
   data: Data[];
   selected?: string;
   setSelected: (e: any) => void;
+  error?: string;
   style?: ViewStyle;
 }
 interface Data {
@@ -19,11 +20,12 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
   style,
   selected,
   setSelected,
+  error,
 }) => {
   const {colors, sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {
-      borderColor: colors.divider,
+      borderColor: error ? colors.danger.main : colors.divider,
       borderWidth: 1,
       borderRadius: sizes.borderRadius.extraSmall,
       paddingVertical: 2 * sizes.spacings.xs,
@@ -47,6 +49,13 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
             {!building ? 'edificio' : building.name}
           </Text>
         </View>
+        {error ? (
+          <View>
+            <Text type="p2" color="danger">
+              {error}
+            </Text>
+          </View>
+        ) : null}
       </Pressable>
       <OptionsBottomSheet
         ref={bottomSheetRef}

@@ -4,6 +4,7 @@ interface StudyRoom {
   building: string;
   image: string;
   seats: string;
+  floor: string;
   isactive: boolean;
   timeRange: TimeRange[];
 }

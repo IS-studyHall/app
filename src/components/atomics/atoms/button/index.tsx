@@ -7,7 +7,12 @@ interface ButtonProps {
   title: string;
   loading?: boolean;
   onPress: () => void;
-  status?: 'default' | 'primaryOutlined' | 'secondary' | 'secondaryOutlined';
+  status?:
+    | 'default'
+    | 'primaryOutlined'
+    | 'secondary'
+    | 'secondaryOutlined'
+    | 'danger';
   style?: ViewStyle;
 }
 const Button: React.FC<ButtonProps> = ({
@@ -34,10 +39,22 @@ const Button: React.FC<ButtonProps> = ({
           borderWidth: 1,
           borderColor: colors.secondary.main,
         };
+      case 'danger':
+        return {
+          backgroundColor: colors.danger.main,
+          borderWidth: 1,
+          borderColor: colors.danger.main,
+        };
       default:
         return {backgroundColor: colors.primary.main};
     }
-  }, [colors.base.white, colors.primary.main, colors.secondary.main, status]);
+  }, [
+    colors.base.white,
+    colors.danger,
+    colors.primary.main,
+    colors.secondary.main,
+    status,
+  ]);
   const styles = StyleSheet.create({
     wrapper: {
       flexDirection: 'row',

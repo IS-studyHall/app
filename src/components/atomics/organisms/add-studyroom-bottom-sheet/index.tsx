@@ -11,6 +11,21 @@ import Preview from '../../molecules/preview';
 import {supervisorSdk} from '../../../../utils/supervisorSdk';
 import {buildingStore} from '../../../../store/module/building';
 import SelectOptions from '../../molecules/select-options';
+import * as Yup from 'yup';
+import Toast from 'react-native-toast-message';
+const StudyroomSchema = Yup.object().shape({
+  name: Yup.string().required('campo richiesto'),
+  building: Yup.string().required('campo richiesto'),
+  floor: Yup.string()
+    .min(1, 'piano non valido')
+    .max(1, 'piano non valido')
+    .required('campo richiesto'),
+  seats: Yup.string()
+    .min(1, 'numero posti non valido')
+    .max(3, 'numero posti non valido')
+    .required('campo richiesto'),
+  image: Yup.string().required('campo richiesto'),
+});
 interface AddStudyroomBottomSheet {
   studyroom?: StudyRoom;
   onSubmit?: () => void;
@@ -63,6 +78,8 @@ const AddStudyroomBottomSheet = React.forwardRef<
       seats: studyroom?.seats.toString() ?? '',
       image: studyroom ? studyroom.image : '',
     },
+    validateOnChange: false,
+    validationSchema: StudyroomSchema,
     onSubmit: async ({name, building, floor, seats, image}) => {
       if (studyroom) {
         await supervisorSdk.updateStudyroom(
@@ -73,15 +90,24 @@ const AddStudyroomBottomSheet = React.forwardRef<
           seats.toString(),
           image,
         );
+      } else {
+        const data = await supervisorSdk.createStudyroom(
+          name,
+          building,
+          floor.toString(),
+          seats.toString(),
+          image,
+        );
+        if (!data) {
+          Toast.show({
+            type: 'error',
+            text1: 'Aula studio non valida',
+            text2: 'Verifica che non hai gia un aula studio con lo stesso nome',
+          });
+        } else {
+          handleClose();
+        }
       }
-      await supervisorSdk.createStudyroom(
-        name,
-        building,
-        floor.toString(),
-        seats.toString(),
-        image,
-      );
-      handleClose();
     },
   });
   return (
@@ -106,24 +132,28 @@ const AddStudyroomBottomSheet = React.forwardRef<
           style={styles.input}
           value={form.values.name}
           setValue={form.handleChange('name')}
+          error={form.errors.name}
           placeholder="nome"
         />
         <SelectOptions
           data={buildings}
           selected={form.values.building}
           setSelected={form.handleChange('building')}
+          error={form.errors.building}
           style={styles.input}
         />
         <Input
           style={styles.input}
           value={form.values.floor}
           setValue={form.handleChange('floor')}
+          error={form.errors.floor}
           placeholder="piano"
         />
         <Input
           style={styles.input}
           value={form.values.seats}
           setValue={form.handleChange('seats')}
+          error={form.errors.seats}
           placeholder="posti totali"
         />
         <Input
@@ -131,6 +161,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
           type="image"
           value={form.values.image}
           setValue={form.handleChange('image')}
+          error={form.errors.image}
         />
         <Button
           style={styles.button}
@@ -143,6 +174,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
           onPress={handleClose}
         />
       </View>
+      <Toast position="top" topOffset={10} />
     </BottomSheetModal>
   );
 });

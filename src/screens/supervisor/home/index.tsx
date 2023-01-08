@@ -47,7 +47,7 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     };
     return (
       <Studyroom
-        key={item.key}
+        key={item._id}
         name={item.name}
         image={item.image}
         style={styles.separator}
@@ -58,7 +58,8 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   return (
     <View>
       <FlatList
-        scrollEnabled={false}
+        scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
         style={styles.wrapper}
         contentContainerStyle={styles.content}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

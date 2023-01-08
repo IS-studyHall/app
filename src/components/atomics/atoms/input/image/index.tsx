@@ -2,14 +2,16 @@ import {View, ViewStyle} from 'react-native';
 import * as React from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Button from '../../button';
+import Text from '../../text';
 
 interface InputProps {
   value: string;
   setValue: (e: string) => void;
+  error?: string;
   placeholder?: string;
   style?: ViewStyle;
 }
-const InputImage: React.FC<InputProps> = ({value, setValue, style}) => {
+const InputImage: React.FC<InputProps> = ({value, setValue, error, style}) => {
   const handleChoosePhoto = () => {
     launchImageLibrary(
       {
@@ -37,6 +39,13 @@ const InputImage: React.FC<InputProps> = ({value, setValue, style}) => {
         }
         onPress={handleChoosePhoto}
       />
+      {error ? (
+        <View>
+          <Text type="p2" color="danger">
+            {error}
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 };

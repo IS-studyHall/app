@@ -10,6 +10,7 @@ import DateRange from './components/date-range';
 import TimeRange from './components/time-range';
 import {timeRange} from '../../../utils/studentSdk/data';
 import Loader from '../../../components/atomics/atoms/loader';
+import Toast from 'react-native-toast-message';
 interface Item {
   item: TimeRange;
 }
@@ -69,10 +70,28 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   const [time, setTime] = React.useState<string>();
   const handleSubmit = async () => {
     if (studyroom && date && time) {
-      await studentSdk.createReservation(studyroom._id, date, time);
-      await studentSdk.getActiveReservations();
-      await studentSdk.getExpiredReservations();
-      navigation.goBack();
+      const data = await studentSdk.createReservation(
+        studyroom._id,
+        date,
+        time,
+      );
+      if (data) {
+        await studentSdk.getActiveReservations();
+        await studentSdk.getExpiredReservations();
+        navigation.goBack();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Prenotazione non valida',
+          text2: 'Controlla le prenotazioni nel giorno e orario seleionato',
+        });
+      }
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Campi richiesti',
+        text2: 'Assicurati di aver inserito tutti i campi',
+      });
     }
   };
   const renderTime = ({item}: Item) => {
@@ -131,6 +150,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         loading={loading}
         onPress={handleSubmit}
       />
+      <Toast position="top" topOffset={10} />
     </View>
   );
 };

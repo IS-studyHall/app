@@ -10,3 +10,4 @@ export {default as HomeSupervisorScreen} from './supervisor/home';
 export {default as LoginSupervisorScreen} from './supervisor/login';
 export {default as SettingsSupervisorScreen} from './supervisor/settings';
 export {default as StudyroomSupervisorScreen} from './supervisor/studyroom';
+export {default as ReservationsSupervisorScreen} from './supervisor/reservations';

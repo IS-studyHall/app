@@ -5,6 +5,7 @@ import InputImage from './image';
 interface InputProps {
   type?: 'standard' | 'image';
   value: string;
+  error?: string;
   setValue: (e: any) => void; //gestire il tipo di e in modo adeguato
   placeholder?: string;
   style?: ViewStyle;
@@ -13,6 +14,7 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({
   type,
   value,
+  error,
   setValue,
   placeholder,
   style,
@@ -24,6 +26,7 @@ const Input: React.FC<InputProps> = ({
         <InputImage
           value={value}
           setValue={setValue}
+          error={error}
           placeholder={placeholder}
           style={style}
         />
@@ -33,6 +36,7 @@ const Input: React.FC<InputProps> = ({
         <StandardInput
           value={value}
           setValue={setValue}
+          error={error}
           placeholder={placeholder}
           style={style}
           hideText={hideText}

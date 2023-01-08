@@ -18,12 +18,17 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
       alignContent: 'center',
       alignSelf: 'center',
       backgroundColor: colors.primary.main,
-      //paddingBottom: ,
       paddingHorizontal: sizes.spacings.m,
     },
     item: {
       padding: sizes.spacings.m,
-      width: '33.33%',
+      width: 'auto',
+      height: 'auto',
+      textAlign: 'center',
+    },
+    side: {
+      padding: sizes.spacings.m,
+      width: '30%',
       height: 'auto',
       textAlign: 'center',
     },
@@ -33,7 +38,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
   };
   return (
     <View style={styles.wrapper}>
-      <Pressable style={styles.item} onPress={handleBack}>
+      <Pressable style={styles.side} onPress={handleBack}>
         <Text type={'p1'} color="light">
           indietro
         </Text>
@@ -41,7 +46,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
       <Text style={styles.item} type="h3" color="light">
         {title ?? (route.params as {title: string} | undefined)?.title ?? ''}
       </Text>
-      <View style={styles.item} />
+      <View style={styles.side} />
     </View>
   );
 };

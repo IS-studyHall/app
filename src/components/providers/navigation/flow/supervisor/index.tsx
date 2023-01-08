@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   HomeSupervisorScreen,
+  ReservationsSupervisorScreen,
   SettingsSupervisorScreen,
   StudyroomSupervisorScreen,
 } from '../../../../../screens';
@@ -104,6 +105,13 @@ const SupervisorNavigation = (): JSX.Element => {
         component={StudyroomSupervisorScreen}
         options={{
           header: props => <BackHeader title="Aula Studio" {...props} />,
+        }}
+      />
+      <SupervisorStackNavigator.Screen
+        name="reservations"
+        component={ReservationsSupervisorScreen}
+        options={{
+          header: props => <BackHeader title="Prenotazioni" {...props} />,
         }}
       />
     </SupervisorStackNavigator.Navigator>

@@ -7,6 +7,16 @@ import {useFormik as useForm} from 'formik';
 import Layout from '../../../components/providers/layout';
 import Text from '../../../components/atomics/atoms/text';
 import {supervisorSdk} from '../../../utils/supervisorSdk';
+import * as Yup from 'yup';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('formato email non valido')
+    .required('campo richiesto'),
+  password: Yup.string()
+    .min(7, 'password non valida')
+    .required('campo richiesto'),
+});
 const LoginScreen = (): JSX.Element => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -32,13 +42,25 @@ const LoginScreen = (): JSX.Element => {
       textAlign: 'center',
     },
   });
+  const [loading, setLoading] = React.useState<boolean>(false);
   const form = useForm({
     initialValues: {
       email: '',
       password: '',
     },
-    onSubmit: ({email, password}) => {
-      supervisorSdk.login(email, password);
+    validateOnChange: false,
+    validationSchema: LoginSchema,
+    onSubmit: async ({email, password}) => {
+      setLoading(true);
+      const data = await supervisorSdk.login(email, password);
+      if (data === null) {
+        Toast.show({
+          type: 'error',
+          text1: 'Username e/o password errati',
+          text2: 'Verifica i campi inseriti',
+        });
+      }
+      setLoading(false);
     },
   });
   return (
@@ -55,6 +77,7 @@ const LoginScreen = (): JSX.Element => {
           style={styles.input}
           value={form.values.email}
           setValue={form.handleChange('email')}
+          error={form.errors.email}
           placeholder="email"
         />
         <Input
@@ -62,14 +85,17 @@ const LoginScreen = (): JSX.Element => {
           value={form.values.password}
           hideText
           setValue={form.handleChange('password')}
+          error={form.errors.password}
           placeholder="password"
         />
         <Button
           title="Accedi"
           onPress={() => form.handleSubmit()}
+          loading={loading}
           style={styles.button}
         />
       </View>
+      <Toast position="top" topOffset={10} />
     </Layout>
   );
 };

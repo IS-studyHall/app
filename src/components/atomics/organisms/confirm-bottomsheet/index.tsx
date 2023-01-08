@@ -25,11 +25,12 @@ const VerifyBottomSheet = React.forwardRef<BottomSheetModal, VerifyBottomSheet>(
         flexDirection: 'column',
         justifyContent: 'space-between',
         paddingHorizontal: sizes.spacings.l,
-        paddingVertical: sizes.spacings.xxl,
+        paddingBottom: sizes.spacings.xxl,
+        paddingTop: sizes.spacings.xs,
         backgroundColor: colors.background.main,
       },
       title: {
-        marginBottom: sizes.spacings.l,
+        marginBottom: sizes.spacings.m,
       },
       dividier: {
         marginVertical: sizes.spacings.s,

@@ -67,7 +67,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     const handleDisable = async () => {
       changeStatusRef.current?.present();
     };
-    const handleReservations = () => console.log('reservations');
+    const handleReservations = () => navigation.navigate('reservations', {id});
     const handleDelete = async () => {
       deleteRef.current?.present();
     };
@@ -94,7 +94,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         func: handleUpdate,
       },
     ];
-  }, [studyroom?.isactive]);
+  }, [id, navigation, studyroom?.isactive]);
   const renderItem = ({item}: Item) => {
     return (
       <View style={styles.item}>

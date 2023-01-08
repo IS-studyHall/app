@@ -7,6 +7,8 @@ import {studentSdk} from '../../../utils/studentSdk';
 import Reservation from './components/reservation';
 import {format} from 'date-fns';
 import Loader from '../../../components/atomics/atoms/loader';
+import VerifyBottomSheet from '../../../components/atomics/organisms/confirm-bottomsheet';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 const ReservationScreen = () => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
@@ -20,13 +22,19 @@ const ReservationScreen = () => {
     divider: {
       paddingBottom: sizes.spacings.xxl,
     },
+    subtitle: {
+      textAlign: 'center',
+      marginBottom: sizes.spacings.m,
+    },
   });
+  const ref = React.useRef<BottomSheetModal>(null);
   const [activeReservations, setActiveReservations] =
     React.useState<Reservation[]>();
   const [expiredReservations, setExpiredReservations] =
     React.useState<Reservation[]>();
   const [buildings, setBuildings] = React.useState<Building[]>();
   const [studyrooms, setStudyrooms] = React.useState<StudyRoom[]>();
+  const [reservation, setReservation] = React.useState<Reservation>();
   const [loading, setLoading] = React.useState<boolean>();
   buildingStore.subscribe(() => {
     const {
@@ -55,49 +63,71 @@ const ReservationScreen = () => {
       <Text type="h1" style={styles.text}>
         Attivo
       </Text>
-      {!loading && activeReservations ? (
-        activeReservations.map(item => (
-          <Reservation
-            key={item._id}
-            id={item._id}
-            building={buildings?.find(o => o._id === item.building)?.name ?? ''}
-            studyroom={
-              studyrooms?.find(o => o._id === item.studyroom)?.name ?? ''
-            }
-            date={formattedDate(item.date)}
-            start={item.start}
-            end={item.end}
-            lat={item.lat}
-            lng={item.lng}
-          />
-        ))
-      ) : (
+      {loading ? (
         <Loader />
+      ) : !activeReservations || activeReservations.length === 0 ? (
+        <Text type={'p1'} style={styles.subtitle}>
+          Non sono presenti prenotazioni attive
+        </Text>
+      ) : (
+        activeReservations.map(item => {
+          const studyroom = studyrooms?.find(o => o._id === item.studyroom);
+          return (
+            <Reservation
+              key={item._id}
+              building={buildings?.find(o => o._id === studyroom?.building)}
+              studyroom={studyroom?.name ?? ''}
+              date={formattedDate(item.date)}
+              start={item.start}
+              end={item.end}
+              handleDelete={() => {
+                setReservation(item);
+                ref.current?.present();
+              }}
+            />
+          );
+        })
       )}
       <Text type="h1" style={styles.text}>
         Scaduto
       </Text>
-      {!loading && expiredReservations ? (
-        expiredReservations.map(item => (
-          <Reservation
-            key={item._id}
-            id={item._id}
-            building={buildings?.find(o => o._id === item.building)?.name ?? ''}
-            studyroom={
-              studyrooms?.find(o => o._id === item.studyroom)?.name ?? ''
-            }
-            date={formattedDate(item.date)}
-            start={item.start}
-            end={item.end}
-            lat={item.lat}
-            lng={item.lng}
-            footer={false}
-          />
-        ))
-      ) : (
+      {loading ? (
         <Loader />
+      ) : !expiredReservations || expiredReservations.length === 0 ? (
+        <Text type={'p1'} style={styles.subtitle}>
+          Non sono presenti prenotazioni passate
+        </Text>
+      ) : (
+        expiredReservations.map(item => {
+          const studyroom = studyrooms?.find(o => o._id === item.studyroom);
+          return (
+            <Reservation
+              key={item._id}
+              building={buildings?.find(o => o._id === studyroom?.building)}
+              studyroom={studyroom?.name ?? ''}
+              date={formattedDate(item.date)}
+              start={item.start}
+              end={item.end}
+              footer={false}
+            />
+          );
+        })
       )}
       <View style={styles.divider} />
+      <VerifyBottomSheet
+        ref={ref}
+        title={'Elimina'}
+        subtitle={`Sicuro di voler eliminare la prenotazione del ${formattedDate(
+          reservation?.date ?? 0,
+        )} alle ore ${reservation?.start} - ${reservation?.end}?`}
+        confirm={async () => {
+          if (reservation?._id) {
+            await studentSdk.deleteReservation(reservation?._id);
+            await studentSdk.getActiveReservations();
+            await studentSdk.getExpiredReservations();
+          }
+        }}
+      />
     </ScrollView>
   );
 };

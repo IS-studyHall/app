@@ -3,6 +3,7 @@ import {loginSupervisor, authStore} from '../../store/module/auth';
 import {
   buildingStore,
   setBuildings,
+  setReservations,
   setStudyroom,
   setStudyrooms,
 } from '../../store/module/building';
@@ -34,8 +35,9 @@ class SupervisorSdk {
         data.data.token;
       console.log('SUPERVISOR LOGIN');
       authStore.dispatch(loginSupervisor(data.data));
+      return data.data;
     } catch (e) {
-      console.log(e);
+      return null;
     }
   }
   async getBuilding() {
@@ -50,15 +52,22 @@ class SupervisorSdk {
     seats: string,
     image: string,
   ) {
-    console.log('create');
-    await SupervisorSdk._instance.api.post('/studyroom/create', {
-      name,
-      building,
-      floor,
-      seats,
-      image,
-    });
-    console.log('STUDYROOM CREATE');
+    try {
+      const {data} = await SupervisorSdk._instance.api.post(
+        '/studyroom/create',
+        {
+          name,
+          building,
+          floor,
+          seats,
+          image,
+        },
+      );
+      console.log('STUDYROOM CREATE');
+      return data;
+    } catch (e) {
+      return null;
+    }
   }
   async updateStudyroom(
     id: string,
@@ -107,8 +116,14 @@ class SupervisorSdk {
     console.log('USER');
     userStore.dispatch(setUser(data.data));
   }
+
+  async getReservations(id: string) {
+    const {data} = await SupervisorSdk._instance.api.get(`/reservation/${id}`);
+    console.log('RESERVATIONS');
+    buildingStore.dispatch(setReservations(data.data));
+  }
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://192.168.1.110:8080',
+  apiUrl: 'http://192.168.1.105:8080',
 });

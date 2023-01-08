@@ -38,7 +38,7 @@ class StudentSdk {
       authStore.dispatch(loginStudent(data.data));
       userStore.dispatch(setUser(data.data));
     } catch (e) {
-      console.log(e);
+      return null;
     }
   }
   async getBuilding() {
@@ -73,14 +73,21 @@ class StudentSdk {
   }
   async createReservation(id: string, date: Date, key: string) {
     const range = timeRange.find(t => t.key === key);
-    console.log('reservation params', id, date.toISOString(), key, range);
-    const {data} = await StudentSdk._instance.api.post('/reservation/create', {
-      start: range?.start,
-      end: range?.end,
-      date: date.toUTCString(),
-      id: id,
-    });
-    console.log('RESERVATION CREATE', data);
+    try {
+      const result = await StudentSdk._instance.api.post(
+        '/reservation/create',
+        {
+          start: range?.start,
+          end: range?.end,
+          date: date.toUTCString(),
+          id: id,
+        },
+      );
+      console.log('RESERVATION CREATE');
+      return result.data;
+    } catch (e) {
+      return null;
+    }
   }
   async getReservations() {
     buildingStore.dispatch(setLoading(true));
@@ -122,5 +129,5 @@ class StudentSdk {
   }
 }
 export const studentSdk = new StudentSdk({
-  apiUrl: 'http://192.168.1.110:8080',
+  apiUrl: 'http://192.168.1.105:8080',
 });

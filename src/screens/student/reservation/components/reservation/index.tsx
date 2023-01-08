@@ -3,34 +3,29 @@ import {Linking, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import Card from '../../../../../components/atomics/atoms/card';
 import Text from '../../../../../components/atomics/atoms/text';
 import theme from '../../../../../components/providers/theme/defaultTheme';
-import {studentSdk} from '../../../../../utils/studentSdk';
 interface Item {
   textLeft: string;
   textRight: string;
   last?: boolean;
 }
 interface ReservationProps {
-  id: string;
-  building: string;
+  building?: Building;
   studyroom: string;
   date: string;
   start: string;
   end: string;
-  lat: string;
-  lng: string;
   style?: ViewStyle;
   footer?: boolean;
+  handleDelete?: () => void;
 }
 const Reservation: React.FC<ReservationProps> = ({
-  id,
   building,
   studyroom,
   date,
   start,
   end,
-  lat,
-  lng,
   footer = true,
+  handleDelete,
 }) => {
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
@@ -61,29 +56,34 @@ const Reservation: React.FC<ReservationProps> = ({
         borderBottomWidth: last ? 0 : 0.5,
         borderBottomColor: colors.divider,
       },
+      bold: {
+        fontWeight: 'bold',
+      },
     });
     return (
       <View style={stylesItem.wrapper}>
         <Text type="p1">{textLeft}</Text>
-        <Text type="p1">{textRight}</Text>
+        <Text type="p1" style={stylesItem.bold}>
+          {textRight}
+        </Text>
       </View>
     );
   };
   const handlePosition = () => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    const url = `https://www.google.com/maps/search/?api=1&query=${building?.coords[0].lat},${building?.coords[0].lng}`;
     Linking.openURL(url);
   };
-  const handleDelete = async () => {
-    await studentSdk.deleteReservation(id);
-    await studentSdk.getActiveReservations();
-    await studentSdk.getExpiredReservations();
-  };
+  console.log(building);
   return (
     <Card style={styles.card}>
-      <RenderItem textLeft="Nome" textRight={`${building} ${studyroom}`} />
       <RenderItem
-        textLeft="data e ora"
-        textRight={`${start} - ${end} ${date}`}
+        textLeft="Nome"
+        textRight={`Edificio ${building?.name} - ${studyroom}`}
+      />
+      <RenderItem textLeft="data" textRight={date} last={!footer} />
+      <RenderItem
+        textLeft="ora"
+        textRight={`${start} - ${end}`}
         last={!footer}
       />
       {footer ? (
