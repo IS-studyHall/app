@@ -125,5 +125,5 @@ class SupervisorSdk {
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://192.168.1.105:8080',
+  apiUrl: 'http://172.19.250.200:8080',
 });

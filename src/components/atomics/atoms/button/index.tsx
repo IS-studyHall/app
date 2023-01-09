@@ -6,12 +6,13 @@ import Text from '../text';
 interface ButtonProps {
   title: string;
   loading?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
   status?:
     | 'default'
     | 'primaryOutlined'
     | 'secondary'
     | 'secondaryOutlined'
+    | 'disable'
     | 'danger';
   style?: ViewStyle;
 }
@@ -45,12 +46,19 @@ const Button: React.FC<ButtonProps> = ({
           borderWidth: 1,
           borderColor: colors.danger.main,
         };
+      case 'disable':
+        return {
+          backgroundColor: colors.divider,
+          borderWidth: 1,
+          borderColor: colors.divider,
+        };
       default:
         return {backgroundColor: colors.primary.main};
     }
   }, [
     colors.base.white,
-    colors.danger,
+    colors.danger.main,
+    colors.divider,
     colors.primary.main,
     colors.secondary.main,
     status,

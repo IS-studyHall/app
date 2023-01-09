@@ -31,10 +31,21 @@ const Layout: React.FC<LayoutProps> = ({
       alignSelf: 'center',
       marginBottom: sizes.spacings.xl,
     },
+    index: {
+      position: 'absolute',
+      top: 0,
+      right: 1.5 * sizes.spacings.xxl,
+    },
   });
   return (
     <View style={styles.wrapper}>
       {header ? null : <View style={styles.banner} />}
+      {!header ? (
+        <Image
+          style={styles.index}
+          source={require('../../../assets/images/index.png')}
+        />
+      ) : null}
       <View>{children}</View>
       <View style={{width: '100%'}}>
         <Image

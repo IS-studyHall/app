@@ -52,6 +52,17 @@ const buildingSlice = createSlice({
       state.favorites = action.payload;
       state.loading = false;
     },
+    resetState: state => {
+      state.loading = false;
+      state.buildings = [] as Building[];
+      state.studyrooms = [] as StudyRoom[];
+      state.studyroom = {} as StudyRoom;
+      state.studyroomsGroupByBuildings = [] as StudyroomsGroupByBuilding[];
+      state.reservations = [] as Reservation[];
+      state.activeReservations = [] as Reservation[];
+      state.expiredReservations = [] as Reservation[];
+      state.favorites = [] as Favorite[];
+    },
   },
 });
 
@@ -65,6 +76,7 @@ export const {
   setActiveReservations,
   setExpiredReservations,
   setFavorites,
+  resetState,
 } = buildingSlice.actions;
 
 export const buildingStore = configureStore({

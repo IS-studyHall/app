@@ -4,6 +4,7 @@ import Card from '../../../components/atomics/atoms/card';
 import Text from '../../../components/atomics/atoms/text';
 import theme from '../../../components/providers/theme/defaultTheme';
 import {logout, authStore} from '../../../store/module/auth';
+import {buildingStore, resetState} from '../../../store/module/building';
 import {userStore} from '../../../store/module/user';
 interface Item {
   textLeft: string;
@@ -46,6 +47,7 @@ const SettingsScreen = () => {
   };
   const user = userStore.getState().user;
   const handleLogout = () => {
+    buildingStore.dispatch(resetState());
     authStore.dispatch(logout());
   };
   return (

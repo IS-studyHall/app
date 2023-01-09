@@ -111,6 +111,14 @@ class StudentSdk {
     const {data} = await StudentSdk._instance.api.delete(`/reservation/${id}`);
     console.log('RESERVATION DELETE', data);
   }
+  async getAssignedSeats(id: string, date: Date) {
+    const {data} = await StudentSdk._instance.api.post('/reservation/', {
+      id,
+      date: date.toUTCString(),
+    });
+    console.log('GET ASSIGNED SEATS', data);
+    return data.data;
+  }
   async createFavorite(id: string) {
     console.log('create');
     const {data} = await StudentSdk._instance.api.get(`/favorite/${id}/create`);
@@ -129,5 +137,5 @@ class StudentSdk {
   }
 }
 export const studentSdk = new StudentSdk({
-  apiUrl: 'http://192.168.1.105:8080',
+  apiUrl: 'http://172.19.250.200:8080',
 });

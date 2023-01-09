@@ -1,6 +1,6 @@
 import {ParamListBase} from '@react-navigation/native';
 import * as React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, Linking, Pressable, StyleSheet, View} from 'react-native';
 import Button from '../../../components/atomics/atoms/button';
 import Preview from '../../../components/atomics/molecules/preview';
 import theme from '../../../components/providers/theme/defaultTheme';
@@ -11,8 +11,10 @@ import TimeRange from './components/time-range';
 import {timeRange} from '../../../utils/studentSdk/data';
 import Loader from '../../../components/atomics/atoms/loader';
 import Toast from 'react-native-toast-message';
+import Text from '../../../components/atomics/atoms/text';
 interface Item {
   item: TimeRange;
+  index: number;
 }
 const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   route,
@@ -43,13 +45,14 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     list: {
       paddingBottom: 2 * sizes.spacings.xxl,
     },
+    date: {
+      marginVertical: sizes.spacings.xl,
+    },
+    desc: {
+      marginTop: sizes.spacings.s,
+      textAlign: 'center',
+    },
   });
-  React.useEffect(() => {
-    const getStudyroom = async () => {
-      await studentSdk.getStudyroom(id);
-    };
-    getStudyroom();
-  }, [id]);
   const [studyroom, setStudyroom] = React.useState<StudyRoom>();
   const [buildings, setBuildings] = React.useState<Building[]>();
   const [favorites, setFavorites] = React.useState<Favorite[]>();
@@ -68,6 +71,27 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   });
   const [date, setDate] = React.useState<Date>();
   const [time, setTime] = React.useState<string>();
+  const [assignedSeats, setAssignedSeats] = React.useState<AssignedSeat[]>();
+  React.useEffect(() => {
+    const getStudyroom = async () => {
+      await studentSdk.getStudyroom(id);
+    };
+    getStudyroom();
+  }, [id]);
+  React.useEffect(() => {
+    const getAssignedSeats = async () => {
+      if (date) {
+        setLoading(true);
+        const data: AssignedSeat[] = await studentSdk.getAssignedSeats(
+          id,
+          date,
+        );
+        setAssignedSeats(data);
+        setLoading(false);
+      }
+    };
+    getAssignedSeats();
+  }, [date, id]);
   const handleSubmit = async () => {
     if (studyroom && date && time) {
       const data = await studentSdk.createReservation(
@@ -98,17 +122,25 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     const handleSelected = () => {
       setTime(item.key);
     };
+    const seatsByTime = assignedSeats
+      ? assignedSeats
+          .find(a => a._id.start === item.start && a._id.end === item.end)
+          ?.count.toString()
+      : undefined;
     return (
       <TimeRange
         start={item.start}
         end={item.end}
         seats={studyroom?.seats}
-        seatsAvailable={item.seatsAvailable}
+        seatsAvailable={seatsByTime ?? '0'}
         style={styles.timeRange}
         selected={item.key === time}
         onPress={handleSelected}
       />
     );
+  };
+  const sendEmail = () => {
+    Linking.openURL('mailto:support@example.com?subject=Segnala un problema'); //modificare l'email
   };
   return (
     <View style={styles.wrapper}>
@@ -134,7 +166,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
           <Loader />
         )}
       </View>
-      <DateRange value={date} setValue={setDate} />
+      <DateRange style={styles.date} value={date} setValue={setDate} />
       <FlatList
         contentContainerStyle={styles.list}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -146,10 +178,15 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       <Button
         style={styles.button}
         title="Prenota"
-        status="secondary"
+        status={studyroom && studyroom.isactive ? 'secondary' : 'disable'}
         loading={loading}
-        onPress={handleSubmit}
+        onPress={studyroom && studyroom.isactive ? handleSubmit : undefined}
       />
+      <Pressable onPress={sendEmail}>
+        <Text type="p1" style={styles.desc} color="url">
+          Segnala un problema
+        </Text>
+      </Pressable>
       <Toast position="top" topOffset={10} />
     </View>
   );

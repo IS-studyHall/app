@@ -32,6 +32,10 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     studyRoom: {
       marginLeft: sizes.spacings.m,
     },
+    desc: {
+      textAlign: 'center',
+      marginTop: sizes.spacings.l,
+    },
   });
   const [studyroomsGroupByBuildings, setstudyroomsGroupByBuildings] =
     React.useState<StudyroomsGroupByBuilding[]>();
@@ -83,13 +87,18 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
       </View>
     );
   };
-  return (
+  console.log(studyroomsGroupByBuildings);
+  return studyroomsGroupByBuildings && studyroomsGroupByBuildings.length > 0 ? (
     <FlatList
       keyExtractor={o => o._id}
       style={styles.wrapper}
       data={studyroomsGroupByBuildings}
       renderItem={renderBuilding}
     />
+  ) : (
+    <Text style={styles.desc} type="p1">
+      Non sono presenti aule studio
+    </Text>
   );
 };
 export default HomeScreen;

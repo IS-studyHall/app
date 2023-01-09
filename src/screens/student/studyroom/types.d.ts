@@ -2,5 +2,8 @@ interface TimeRange {
   key: string;
   start: string;
   end: string;
-  seatsAvailable: string;
+}
+interface AssignedSeat {
+  _id: TimeRange;
+  count: number;
 }

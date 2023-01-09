@@ -5,6 +5,7 @@ import Studyroom from '../../../components/atomics/molecules/preview';
 import {ParamListBase} from '@react-navigation/native';
 import {buildingStore} from '../../../store/module/building';
 import {supervisorSdk} from '../../../utils/supervisorSdk';
+import Text from '../../../components/atomics/atoms/text';
 interface renderStudyRoom {
   item: Studyroom;
 }
@@ -28,6 +29,10 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     },
     separator: {
       marginBottom: sizes.spacings.s,
+    },
+    desc: {
+      textAlign: 'center',
+      marginTop: sizes.spacings.l,
     },
   });
   React.useEffect(() => {
@@ -57,16 +62,22 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
   };
   return (
     <View>
-      <FlatList
-        scrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-        style={styles.wrapper}
-        contentContainerStyle={styles.content}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={studyrooms}
-        keyExtractor={item => item._id}
-        renderItem={renderStudyRoom}
-      />
+      {studyrooms?.length === 0 ? (
+        <Text style={styles.desc} type="p1">
+          Non sono presenti aule studio
+        </Text>
+      ) : (
+        <FlatList
+          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+          style={styles.wrapper}
+          contentContainerStyle={styles.content}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          data={studyrooms}
+          keyExtractor={item => item._id}
+          renderItem={renderStudyRoom}
+        />
+      )}
     </View>
   );
 };

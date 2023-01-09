@@ -22,6 +22,11 @@ const Header: React.FC<BottomTabHeader | StackHeader> = ({title}) => {
       backgroundColor: colors.primary.main,
       paddingBottom: sizes.spacings.m,
     },
+    index: {
+      position: 'absolute',
+      top: 0,
+      right: 1.5 * sizes.spacings.xxl,
+    },
   });
   return (
     <View style={styles.wrapper}>

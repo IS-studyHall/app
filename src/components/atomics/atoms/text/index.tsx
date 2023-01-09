@@ -53,6 +53,8 @@ const Text: React.FC<TextProps> = ({
         return colors.divider;
       case 'secondary':
         return colors.secondary.main;
+      case 'url':
+        return colors.divider;
       default:
         return colors.base.black;
     }
@@ -68,6 +70,7 @@ const Text: React.FC<TextProps> = ({
       fontSize: textStyle?.size,
       fontWeight: textStyle?.weight,
       color: textColor,
+      textDecorationLine: color === 'url' ? 'underline' : undefined,
     },
   });
   return <RNText style={[styles.text, style]}>{children}</RNText>;

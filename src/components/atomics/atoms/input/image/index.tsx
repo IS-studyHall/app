@@ -1,4 +1,4 @@
-import {View, ViewStyle} from 'react-native';
+import {Keyboard, View, ViewStyle} from 'react-native';
 import * as React from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Button from '../../button';
@@ -20,6 +20,7 @@ const InputImage: React.FC<InputProps> = ({value, setValue, error, style}) => {
       },
       response => {
         if (response.assets) {
+          Keyboard.dismiss();
           const prew =
             /*response.assets[0].type === 'image/jpg' ||
             response.assets[0].type === 'image/jpeg'
