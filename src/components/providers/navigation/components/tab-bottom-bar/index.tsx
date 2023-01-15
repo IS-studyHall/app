@@ -7,11 +7,13 @@ import Text from '../../../../atomics/atoms/text';
 //import LinearGradient from 'react-native-linear-gradient';
 import theme from '../../../theme/defaultTheme';
 import Icon from 'react-native-vector-icons/AntDesign';
+//import Icon from 'react-native-vector-icons/FontAwesome';
 
 const tabIconsUnselected: {[key: string]: string} = {
   Home: 'home',
   Prenotazioni: 'book',
-  Impostazioni: 'setting',
+  Profilo: 'user',
+  Mappa: 'enviromento',
   // Dashboard: 'dashboard',
 };
 
@@ -22,8 +24,8 @@ const tabIconsUnselected: {[key: string]: string} = {
   Knowledge: 'compassSelected',
   // Dashboard: 'dashboard',
 };*/
-const studentScreens = ['Home', 'Prenotazioni', 'Impostazioni'];
-const supervisorScreens = ['Home', 'Impostazioni'];
+const studentScreens = ['Home', 'Mappa', 'Profilo'];
+const supervisorScreens = ['Home', 'Profilo'];
 
 interface BottomTabBar extends BottomTabBarProps {
   supervisor?: boolean;

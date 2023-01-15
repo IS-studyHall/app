@@ -3,6 +3,7 @@ import {Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import theme from '../../../providers/theme/defaultTheme';
 import Loader from '../loader';
 import Text from '../text';
+import Icon from 'react-native-vector-icons/AntDesign';
 interface ButtonProps {
   title: string;
   loading?: boolean;
@@ -14,6 +15,7 @@ interface ButtonProps {
     | 'secondaryOutlined'
     | 'disable'
     | 'danger';
+  icon?: string;
   style?: ViewStyle;
 }
 const Button: React.FC<ButtonProps> = ({
@@ -21,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   loading,
   onPress,
   status,
+  icon,
   style,
 }) => {
   const {sizes, colors} = theme;
@@ -70,6 +73,14 @@ const Button: React.FC<ButtonProps> = ({
       paddingVertical: sizes.spacings.s,
       borderRadius: sizes.borderRadius.extraBig,
     },
+    content: {
+      marginHorizontal: sizes.spacings.xs,
+      flex: icon ? 1 : 0,
+      flexDirection: 'row',
+    },
+    icon: {
+      marginHorizontal: sizes.spacings.xs,
+    },
   });
   return (
     <Pressable onPress={loading ? undefined : onPress}>
@@ -77,11 +88,21 @@ const Button: React.FC<ButtonProps> = ({
         {loading ? (
           <Loader status="light" />
         ) : (
-          <Text
-            type="p1"
-            color={status?.includes('Outlined') ? 'title' : 'light'}>
-            {title}
-          </Text>
+          <View style={styles.content}>
+            {icon ? (
+              <Icon
+                color={colors.background.main}
+                name={icon}
+                size={18}
+                style={styles.icon}
+              />
+            ) : null}
+            <Text
+              type="p1"
+              color={status?.includes('Outlined') ? 'title' : 'light'}>
+              {title}
+            </Text>
+          </View>
         )}
       </View>
     </Pressable>

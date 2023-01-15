@@ -75,21 +75,25 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     return [
       {
         name: studyroom?.isactive ? 'Sospendi' : 'Attiva',
+        icon: 'warning',
         color: 'secondary',
         func: handleDisable,
       },
       {
         name: 'Lista Prenotazioni',
+        icon: 'book',
         color: 'primary',
         func: handleReservations,
       },
       {
         name: 'Elimina',
+        icon: 'close',
         color: 'primary',
         func: handleDelete,
       },
       {
         name: 'Modifica',
+        icon: 'setting',
         color: 'secondary',
         func: handleUpdate,
       },
@@ -99,6 +103,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     return (
       <View style={styles.item}>
         <Button
+          icon={item.icon}
           status={item.color}
           style={styles.button}
           title={item.name}

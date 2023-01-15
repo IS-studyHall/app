@@ -13,7 +13,8 @@ const ReservationScreen = () => {
   const {sizes} = theme;
   const styles = StyleSheet.create({
     wrapper: {
-      marginHorizontal: sizes.spacings.l,
+      backgroundColor: '#F5F5F5',
+      paddingHorizontal: sizes.spacings.l,
       paddingTop: sizes.spacings.xl,
     },
     text: {
@@ -54,7 +55,7 @@ const ReservationScreen = () => {
     studentSdk.getActiveReservations();
     studentSdk.getExpiredReservations();
   }, []);
-  const formattedDate = (date: number) => {
+  const formattedDate = (date: string) => {
     const newDate = new Date(date);
     return format(newDate, 'dd-MM-yyyy');
   };
@@ -117,9 +118,9 @@ const ReservationScreen = () => {
       <VerifyBottomSheet
         ref={ref}
         title={'Elimina'}
-        subtitle={`Sicuro di voler eliminare la prenotazione del ${formattedDate(
-          reservation?.date ?? 0,
-        )} alle ore ${reservation?.start} - ${reservation?.end}?`}
+        subtitle={`Sicuro di voler eliminare la prenotazione del ${
+          reservation ? formattedDate(reservation?.date) : ''
+        } alle ore ${reservation?.start} - ${reservation?.end}?`}
         confirm={async () => {
           if (reservation?._id) {
             await studentSdk.deleteReservation(reservation?._id);

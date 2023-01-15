@@ -4,6 +4,7 @@ export {default as LoginStudentScreen} from './student/login';
 export {default as SettingsStudentScreen} from './student/settings';
 export {default as ReservationStudentScreen} from './student/reservation';
 export {default as StudyroomStudentScreen} from './student/studyroom';
+export {default as MapStudentScreen} from './student/map';
 
 //supervisor flow
 export {default as HomeSupervisorScreen} from './supervisor/home';

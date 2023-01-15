@@ -1,6 +1,13 @@
 import {ParamListBase} from '@react-navigation/native';
 import * as React from 'react';
-import {FlatList, Linking, Pressable, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Button from '../../../components/atomics/atoms/button';
 import Preview from '../../../components/atomics/molecules/preview';
 import theme from '../../../components/providers/theme/defaultTheme';
@@ -102,7 +109,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       if (data) {
         await studentSdk.getActiveReservations();
         await studentSdk.getExpiredReservations();
-        navigation.goBack();
+        navigation.navigate('Reservation');
       } else {
         Toast.show({
           type: 'error',
@@ -139,19 +146,22 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       />
     );
   };
+  const building = studyroom
+    ? buildings?.find(b => b._id === studyroom.building)?.name
+    : '';
   const sendEmail = () => {
-    Linking.openURL('mailto:support@example.com?subject=Segnala un problema'); //modificare l'email
+    Linking.openURL(
+      `mailto:${studyroom?.email}?subject=Segnala un problema - ${studyroom?.name} Ed. ${building}`,
+    ); //modificare l'email
   };
   return (
-    <View style={styles.wrapper}>
+    <ScrollView style={styles.wrapper}>
       <View style={styles.preview}>
         {studyroom ? (
           <Preview
             id={studyroom._id}
             name={studyroom.name}
-            building={`Edificio ${
-              buildings?.find(b => b._id === studyroom.building)?.name
-            }`}
+            building={`Edificio ${building}`}
             image={studyroom.image}
             active={studyroom.isactive}
             favoriteState={
@@ -188,7 +198,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         </Text>
       </Pressable>
       <Toast position="top" topOffset={10} />
-    </View>
+    </ScrollView>
   );
 };
 export default StudyroomScreen;

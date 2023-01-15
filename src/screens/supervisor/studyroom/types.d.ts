@@ -6,6 +6,7 @@ interface StudyRoom {
   seats: string;
   floor: string;
   isactive: boolean;
+  email?: string;
   timeRange: TimeRange[];
 }
 

@@ -77,6 +77,7 @@ class SupervisorSdk {
     seats: string,
     image: string,
   ) {
+    console.log('update');
     await SupervisorSdk._instance.api.patch(`/studyroom/${id}`, {
       name,
       building,
@@ -125,5 +126,5 @@ class SupervisorSdk {
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://172.19.250.200:8080',
+  apiUrl: 'http://192.168.1.107:8080',
 });

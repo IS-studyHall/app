@@ -4,6 +4,7 @@ import {
   ReservationStudentScreen,
   SettingsStudentScreen,
   StudyroomStudentScreen,
+  MapStudentScreen,
 } from '../../../../../screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TabBar from '../../components/tab-bottom-bar';
@@ -26,11 +27,11 @@ const StudentTabBar = (): JSX.Element => {
         }}
       />
       <Tab.Screen
-        name="Reservation"
+        name="Maps"
+        component={MapStudentScreen}
         options={{
-          header: props => <Header title="Prenotazioni" {...props} />,
+          header: props => <Header title="Mappa" {...props} />,
         }}
-        component={ReservationStudentScreen}
       />
       <Tab.Screen
         name="Settings"
@@ -65,6 +66,13 @@ const StudentNavigation = (): JSX.Element => {
         options={{headerShown: false}}
         name="TabBar"
         component={StudentTabBar}
+      />
+      <StudentStackNavigator.Screen
+        name="Reservation"
+        options={{
+          header: props => <BackHeader title="Prenotazioni" {...props} />,
+        }}
+        component={ReservationStudentScreen}
       />
       <StudentStackNavigator.Screen
         name="studyroom"
