@@ -32,7 +32,6 @@ class StudentSdk {
         username,
         password,
       });
-      console.log('data', data);
       StudentSdk._instance.api.defaults.headers.common.Authorization =
         data.data.token;
       console.log('STUDENT LOGIN');
@@ -121,12 +120,10 @@ class StudentSdk {
     return data.data;
   }
   async createFavorite(id: string) {
-    console.log('create');
     const {data} = await StudentSdk._instance.api.get(`/favorite/${id}/create`);
     console.log('FAVORITE CREATE', data);
   }
   async deleteFavorite(id: string) {
-    console.log('delete');
     const {data} = await StudentSdk._instance.api.delete(`/favorite/${id}`);
     console.log('FAVORITE DELETE', data);
   }
@@ -138,5 +135,5 @@ class StudentSdk {
   }
 }
 export const studentSdk = new StudentSdk({
-  apiUrl: 'http://192.168.1.107:8080',
+  apiUrl: 'http://172.19.209.141:8080',
 });

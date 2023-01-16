@@ -55,7 +55,6 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     const handlePress = () => {
       navigation.navigate('studyroom', {id: item._id, title: item.name});
     };
-    console.log('IMAGE:', item.image);
     return (
       <Studyroom
         key={item._id}
@@ -72,6 +71,7 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
     );
   };
   const renderBuilding = ({item}: RenderBuilding) => {
+    console.log('item', item);
     return (
       <View>
         <Text style={styles.text} type="h1" color="secondary">
@@ -87,7 +87,6 @@ const HomeScreen: ScreenComponentType<ParamListBase, 'Home'> = ({
       </View>
     );
   };
-  console.log(studyroomsGroupByBuildings);
   return studyroomsGroupByBuildings && studyroomsGroupByBuildings.length > 0 ? (
     <FlatList
       keyExtractor={o => o._id}

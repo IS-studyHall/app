@@ -77,7 +77,6 @@ class SupervisorSdk {
     seats: string,
     image: string,
   ) {
-    console.log('update');
     await SupervisorSdk._instance.api.patch(`/studyroom/${id}`, {
       name,
       building,
@@ -96,7 +95,6 @@ class SupervisorSdk {
   }
 
   async getStudyroom(id: string) {
-    console.log(id);
     const {data} = await SupervisorSdk._instance.api.get(`/studyroom/${id}`);
     buildingStore.dispatch(setStudyroom(data.data));
     console.log('STUDYROOM READ', data);
@@ -126,5 +124,5 @@ class SupervisorSdk {
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://192.168.1.107:8080',
+  apiUrl: 'http://172.19.209.141:8080',
 });

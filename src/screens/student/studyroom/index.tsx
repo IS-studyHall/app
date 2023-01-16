@@ -101,11 +101,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
   }, [date, id]);
   const handleSubmit = async () => {
     if (studyroom && date && time) {
-      const data = await studentSdk.createReservation(
-        studyroom._id,
-        date,
-        time,
-      );
+      const data = await studentSdk.createReservation(id, date, time);
       if (data) {
         await studentSdk.getActiveReservations();
         await studentSdk.getExpiredReservations();
@@ -159,14 +155,14 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
       <View style={styles.preview}>
         {studyroom ? (
           <Preview
-            id={studyroom._id}
+            id={id}
             name={studyroom.name}
             building={`Edificio ${building}`}
             image={studyroom.image}
             active={studyroom.isactive}
             favoriteState={
               favorites
-                ? favorites.findIndex(o => o.studyroom === studyroom._id) > -1
+                ? favorites.findIndex(o => o.studyroom === id) > -1
                 : undefined
             }
             adaptToContent
@@ -190,7 +186,17 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         title="Prenota"
         status={studyroom && studyroom.isactive ? 'secondary' : 'disable'}
         loading={loading}
-        onPress={studyroom && studyroom.isactive ? handleSubmit : undefined}
+        onPress={
+          studyroom && studyroom.isactive
+            ? handleSubmit
+            : () => {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Aula studio non attiva',
+                  text2: 'Contatta il gestore per ulteriori informazioni',
+                });
+              }
+        }
       />
       <Pressable onPress={sendEmail}>
         <Text type="p1" style={styles.desc} color="url">

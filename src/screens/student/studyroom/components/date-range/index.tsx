@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Pressable, StyleSheet, View, ViewStyle} from 'react-native';
+import Toast from 'react-native-toast-message';
 import Text from '../../../../../components/atomics/atoms/text';
 import theme from '../../../../../components/providers/theme/defaultTheme';
 interface DateRangeProps {
@@ -51,8 +52,14 @@ const DateRange: React.FC<DateRangeProps> = ({value, setValue, style}) => {
       },
     });
     const handlePress = () => {
-      if (today <= day) {
+      if (today < day) {
         setValue(day);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Data non valida',
+          text2: 'Assicurati di aver selezionato una data valida',
+        });
       }
     };
     return (
