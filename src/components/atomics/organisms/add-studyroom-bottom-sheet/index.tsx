@@ -1,7 +1,12 @@
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {BottomSheetModalMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import Button from '../../atoms/button';
 import Input from '../../atoms/input';
 import Text from '../../atoms/text';
@@ -37,7 +42,6 @@ const AddStudyroomBottomSheet = React.forwardRef<
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
     contentContainer: {
-      flex: 1,
       paddingHorizontal: sizes.spacings.l,
       paddingVertical: sizes.spacings.xxl,
       backgroundColor: colors.background.main,
@@ -50,6 +54,7 @@ const AddStudyroomBottomSheet = React.forwardRef<
     },
     button: {
       marginBottom: sizes.spacings.s,
+      marginHorizontal: sizes.spacings.l,
     },
     separator: {
       marginBottom: sizes.spacings.xxl,
@@ -82,14 +87,25 @@ const AddStudyroomBottomSheet = React.forwardRef<
     validationSchema: StudyroomSchema,
     onSubmit: async ({name, building, floor, seats, image}) => {
       if (studyroom) {
-        await supervisorSdk.updateStudyroom(
-          studyroom._id,
-          name,
-          building,
-          floor.toString(),
-          seats.toString(),
-          image,
-        );
+        try {
+          await supervisorSdk.updateStudyroom(
+            studyroom._id,
+            name,
+            building,
+            floor.toString(),
+            seats.toString(),
+            image,
+          );
+          if (onSubmit) {
+            onSubmit();
+          }
+        } catch (e) {
+          Toast.show({
+            type: 'error',
+            text1: 'Campi errati',
+            text2: 'Controlla che i campi inseriti siano validi',
+          });
+        }
       } else {
         const data = await supervisorSdk.createStudyroom(
           name,
@@ -116,64 +132,70 @@ const AddStudyroomBottomSheet = React.forwardRef<
       index={1}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}>
-      <View style={styles.contentContainer}>
-        <Text type="h1" style={styles.title}>
-          Aggiungi aula studio
-        </Text>
-        {form.values.image !== '' ? (
-          <Preview
-            style={[styles.image, styles.input]}
-            name={'anteprima'}
-            image={form.values.image}
-            gradient={false}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.contentContainer}>
+          <Text type="h1" style={styles.title}>
+            Aggiungi aula studio
+          </Text>
+          {form.values.image !== '' ? (
+            <Preview
+              style={[styles.image, styles.input]}
+              name={'anteprima'}
+              image={form.values.image}
+              gradient={false}
+            />
+          ) : null}
+          <Input
+            style={styles.input}
+            value={form.values.name}
+            setValue={form.handleChange('name')}
+            error={form.errors.name}
+            placeholder="nome"
           />
-        ) : null}
-        <Input
-          style={styles.input}
-          value={form.values.name}
-          setValue={form.handleChange('name')}
-          error={form.errors.name}
-          placeholder="nome"
-        />
-        <SelectOptions
-          data={buildings}
-          selected={form.values.building}
-          setSelected={form.handleChange('building')}
-          error={form.errors.building}
-          style={styles.input}
-        />
-        <Input
-          style={styles.input}
-          value={form.values.floor}
-          setValue={form.handleChange('floor')}
-          error={form.errors.floor}
-          placeholder="piano"
-        />
-        <Input
-          style={styles.input}
-          value={form.values.seats}
-          setValue={form.handleChange('seats')}
-          error={form.errors.seats}
-          placeholder="posti totali"
-        />
-        <Input
-          style={styles.separator}
-          type="image"
-          value={form.values.image}
-          setValue={form.handleChange('image')}
-          error={form.errors.image}
-        />
-        <Button
-          style={styles.button}
-          title="conferma"
-          onPress={form.handleSubmit}
-        />
-        <Button
-          status="primaryOutlined"
-          title="annulla"
-          onPress={handleClose}
-        />
-      </View>
+          <SelectOptions
+            data={buildings}
+            selected={form.values.building}
+            setSelected={form.handleChange('building')}
+            error={form.errors.building}
+            style={styles.input}
+          />
+          <Input
+            style={styles.input}
+            value={form.values.floor}
+            setValue={form.handleChange('floor')}
+            error={form.errors.floor}
+            keyboardType="numeric"
+            placeholder="piano"
+          />
+          <Input
+            style={styles.input}
+            value={form.values.seats}
+            setValue={form.handleChange('seats')}
+            error={form.errors.seats}
+            keyboardType="numeric"
+            placeholder="posti totali"
+          />
+          <Input
+            style={styles.separator}
+            type="image"
+            value={form.values.image}
+            setValue={form.handleChange('image')}
+            error={form.errors.image}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+      <Button
+        key="submit"
+        style={styles.button}
+        title="conferma"
+        onPress={form.handleSubmit}
+      />
+      <Button
+        style={styles.button}
+        status="primaryOutlined"
+        title="annulla"
+        onPress={handleClose}
+      />
       <Toast position="top" topOffset={10} />
     </BottomSheetModal>
   );

@@ -116,6 +116,7 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
     const buildings = buildingStore.getState().buildings;
     return buildings.find(o => o._id === studyroom?.building);
   }, [studyroom?.building]);
+  console.log(studyroom);
   return studyroom ? (
     <View style={styles.wrapper}>
       <View style={styles.preview}>
@@ -161,7 +162,9 @@ const StudyroomScreen: ScreenComponentType<ParamListBase, 'Studyroom'> = ({
         ref={updateRef}
         studyroom={studyroom}
         onSubmit={async () => {
+          updateRef.current?.close();
           await supervisorSdk.getStudyroom(id);
+          console.log('close');
           await supervisorSdk.getStudyrooms();
         }}
       />

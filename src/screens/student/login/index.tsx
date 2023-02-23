@@ -9,6 +9,7 @@ import Text from '../../../components/atomics/atoms/text';
 import {studentSdk} from '../../../utils/studentSdk';
 import * as Yup from 'yup';
 import Toast from 'react-native-toast-message';
+import ObservedScreen from '../../observer';
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(3, 'username non valido')
@@ -25,7 +26,7 @@ const LoginScreen = (): JSX.Element => {
       width: '80%',
       flexDirection: 'column',
       alignSelf: 'center',
-      marginTop: 1.5 * sizes.spacings.xxl,
+      paddingTop: 1.5 * sizes.spacings.xxl,
     },
     input: {
       marginTop: sizes.spacings.s,
@@ -65,39 +66,41 @@ const LoginScreen = (): JSX.Element => {
     },
   });
   return (
-    <Layout header={true}>
-      <View style={styles.wrapper}>
-        <Image
-          style={styles.image}
-          source={require('../../../assets/images/splash.png')}
-        />
-        <Text style={styles.text} type="p2" color="hint">
-          Effettua l'accesso con le credenziali Esse3
-        </Text>
-        <Input
-          style={styles.input}
-          value={form.values.username}
-          setValue={form.handleChange('username')}
-          error={form.errors.username}
-          placeholder="username"
-        />
-        <Input
-          style={styles.input}
-          value={form.values.password}
-          setValue={form.handleChange('password')}
-          error={form.errors.password}
-          placeholder="password"
-          hideText={true}
-        />
-        <Button
-          title="Accedi"
-          onPress={() => form.handleSubmit()}
-          loading={loading}
-          style={styles.button}
-        />
-      </View>
-      <Toast position="top" topOffset={10} />
-    </Layout>
+    <ObservedScreen screenId="loginStudent">
+      <Layout header={true}>
+        <View style={styles.wrapper}>
+          <Image
+            style={styles.image}
+            source={require('../../../assets/images/splash.png')}
+          />
+          <Text style={styles.text} type="p2" color="hint">
+            Effettua l'accesso con le credenziali Esse3
+          </Text>
+          <Input
+            style={styles.input}
+            value={form.values.username}
+            setValue={form.handleChange('username')}
+            error={form.errors.username}
+            placeholder="username"
+          />
+          <Input
+            style={styles.input}
+            value={form.values.password}
+            setValue={form.handleChange('password')}
+            error={form.errors.password}
+            placeholder="password"
+            hideText={true}
+          />
+          <Button
+            title="Accedi"
+            onPress={() => form.handleSubmit()}
+            loading={loading}
+            style={styles.button}
+          />
+        </View>
+        <Toast position="top" topOffset={10} />
+      </Layout>
+    </ObservedScreen>
   );
 };
 export default LoginScreen;

@@ -4,6 +4,7 @@ import theme from '../../../providers/theme/defaultTheme';
 import Loader from '../loader';
 import Text from '../text';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {observer} from '../../../../utils/observer';
 interface ButtonProps {
   title: string;
   loading?: boolean;
@@ -83,7 +84,18 @@ const Button: React.FC<ButtonProps> = ({
     },
   });
   return (
-    <Pressable onPress={loading ? undefined : onPress}>
+    <Pressable
+      accessibilityLabel={title}
+      onPress={
+        loading
+          ? undefined
+          : () => {
+              observer.notify(title, new Date(), 'CLICK');
+              if (onPress) {
+                onPress();
+              }
+            }
+      }>
       <View style={[styles.wrapper, buttonColor, style]}>
         {loading ? (
           <Loader status="light" />

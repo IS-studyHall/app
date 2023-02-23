@@ -9,6 +9,7 @@ import Text from '../../../components/atomics/atoms/text';
 import {supervisorSdk} from '../../../utils/supervisorSdk';
 import * as Yup from 'yup';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import ObservedScreen from '../../observer';
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email('formato email non valido')
@@ -64,39 +65,41 @@ const LoginScreen = (): JSX.Element => {
     },
   });
   return (
-    <Layout header={true}>
-      <View style={styles.wrapper}>
-        <Image
-          style={styles.image}
-          source={require('../../../assets/images/splash.png')}
-        />
-        <Text style={styles.text} type="p2" color="hint">
-          Effettua l'accesso con le credenziali
-        </Text>
-        <Input
-          style={styles.input}
-          value={form.values.email}
-          setValue={form.handleChange('email')}
-          error={form.errors.email}
-          placeholder="email"
-        />
-        <Input
-          style={styles.input}
-          value={form.values.password}
-          hideText
-          setValue={form.handleChange('password')}
-          error={form.errors.password}
-          placeholder="password"
-        />
-        <Button
-          title="Accedi"
-          onPress={() => form.handleSubmit()}
-          loading={loading}
-          style={styles.button}
-        />
-      </View>
-      <Toast position="top" topOffset={10} />
-    </Layout>
+    <ObservedScreen screenId="loginSupervisor">
+      <Layout header={true}>
+        <View style={styles.wrapper}>
+          <Image
+            style={styles.image}
+            source={require('../../../assets/images/splash.png')}
+          />
+          <Text style={styles.text} type="p2" color="hint">
+            Effettua l'accesso con le credenziali
+          </Text>
+          <Input
+            style={styles.input}
+            value={form.values.email}
+            setValue={form.handleChange('email')}
+            error={form.errors.email}
+            placeholder="email"
+          />
+          <Input
+            style={styles.input}
+            value={form.values.password}
+            hideText
+            setValue={form.handleChange('password')}
+            error={form.errors.password}
+            placeholder="password"
+          />
+          <Button
+            title="Accedi"
+            onPress={() => form.handleSubmit()}
+            loading={loading}
+            style={styles.button}
+          />
+        </View>
+        <Toast position="top" topOffset={10} />
+      </Layout>
+    </ObservedScreen>
   );
 };
 export default LoginScreen;

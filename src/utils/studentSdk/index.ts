@@ -135,5 +135,5 @@ class StudentSdk {
   }
 }
 export const studentSdk = new StudentSdk({
-  apiUrl: 'http://172.19.209.141:8080',
+  apiUrl: 'http://172.20.10.3:8080',
 });

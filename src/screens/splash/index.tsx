@@ -4,6 +4,7 @@ import {Dimensions, Image, StyleSheet} from 'react-native';
 import Button from '../../components/atomics/atoms/button';
 import Layout from '../../components/providers/layout';
 import theme from '../../components/providers/theme/defaultTheme';
+import ObservedScreen from '../observer';
 
 const SplashScreen: ScreenComponentType<ParamListBase, 'Splash'> = ({
   navigation,
@@ -33,23 +34,25 @@ const SplashScreen: ScreenComponentType<ParamListBase, 'Splash'> = ({
     navigation.navigate('LoginStudent', {title: 'Studente'});
   };
   return (
-    <Layout>
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/splash.png')}
-      />
-      <Button
-        style={styles.button}
-        title="accedi come Studente"
-        onPress={handleLoginStudent}
-      />
-      <Button
-        style={styles.button}
-        status="secondary"
-        title="accedi come Supervisor"
-        onPress={handleLoginSupervisor}
-      />
-    </Layout>
+    <ObservedScreen screenId="splash">
+      <Layout>
+        <Image
+          style={styles.image}
+          source={require('../../assets/images/splash.png')}
+        />
+        <Button
+          style={styles.button}
+          title="accedi come Studente"
+          onPress={handleLoginStudent}
+        />
+        <Button
+          style={styles.button}
+          status="secondary"
+          title="accedi come Supervisor"
+          onPress={handleLoginSupervisor}
+        />
+      </Layout>
+    </ObservedScreen>
   );
 };
 export default SplashScreen;

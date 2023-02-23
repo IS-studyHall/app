@@ -9,6 +9,9 @@ interface BackHeaderProps extends StackHeaderProps {
 const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
   const {colors, sizes} = theme;
   const styles = StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.main,
+    },
     wrapper: {
       width: '100%',
       height: Platform.OS === 'ios' ? 80 : 60,
@@ -43,7 +46,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({navigation, route, title}) => {
     navigation.goBack();
   };
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.wrapper}>
         <Pressable style={styles.side} onPress={handleBack}>
           <Text type={'p1'} color="light">

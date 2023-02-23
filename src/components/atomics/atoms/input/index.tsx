@@ -10,6 +10,7 @@ interface InputProps {
   placeholder?: string;
   style?: ViewStyle;
   hideText?: boolean;
+  keyboardType?: 'numeric' | undefined;
 }
 const Input: React.FC<InputProps> = ({
   type,
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   style,
   hideText,
+  keyboardType,
 }) => {
   switch (type) {
     case 'image':
@@ -40,6 +42,7 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           style={style}
           hideText={hideText}
+          keyboardType={keyboardType}
         />
       );
   }

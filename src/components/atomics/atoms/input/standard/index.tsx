@@ -10,6 +10,7 @@ interface InputProps {
   placeholder?: string;
   style?: ViewStyle;
   hideText?: boolean;
+  keyboardType?: 'numeric' | undefined;
 }
 const StandardInput: React.FC<InputProps> = ({
   value,
@@ -18,6 +19,7 @@ const StandardInput: React.FC<InputProps> = ({
   placeholder,
   style,
   hideText,
+  keyboardType,
 }) => {
   const {sizes, colors} = theme;
   const styles = StyleSheet.create({
@@ -48,9 +50,11 @@ const StandardInput: React.FC<InputProps> = ({
         <RNInput
           style={styles.input}
           value={value}
+          accessibilityLabel={placeholder}
           onChangeText={handleChange}
           secureTextEntry={hideText ? !showText : undefined}
           placeholder={placeholder}
+          keyboardType={keyboardType}
         />
         {hideText ? (
           <View style={styles.icon}>

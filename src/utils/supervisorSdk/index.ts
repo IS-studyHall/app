@@ -24,6 +24,7 @@ class SupervisorSdk {
   }
   async login(email: string, password: string) {
     try {
+      console.log('SUPERVISOR LOGIN');
       const {data} = await SupervisorSdk._instance.api.post(
         '/organization/login',
         {
@@ -31,6 +32,7 @@ class SupervisorSdk {
           password,
         },
       );
+      console.log('SUPERVISOR LOGIN');
       SupervisorSdk._instance.api.defaults.headers.common.Authorization =
         data.data.token;
       console.log('SUPERVISOR LOGIN');
@@ -118,11 +120,11 @@ class SupervisorSdk {
 
   async getReservations(id: string) {
     const {data} = await SupervisorSdk._instance.api.get(`/reservation/${id}`);
-    console.log('RESERVATIONS');
+    console.log('RESERVATIONS', data);
     buildingStore.dispatch(setReservations(data.data));
   }
 }
 
 export const supervisorSdk = new SupervisorSdk({
-  apiUrl: 'http://172.19.209.141:8080',
+  apiUrl: 'http://172.20.10.3:8080',
 });

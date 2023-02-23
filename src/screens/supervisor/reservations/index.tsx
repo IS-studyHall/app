@@ -27,12 +27,14 @@ const ReservationsScreen: ScreenComponentType<
   React.useEffect(() => {
     supervisorSdk.getReservations(id);
   }, [id]);
-  const formattedDate = (date: number) => {
+  const formattedDate = (date: string) => {
+    console.log(date);
     const newDate = new Date(date);
     return format(newDate, 'dd-MM-yyyy');
   };
   const renderItem = ({item}: Item) => {
     const studyroom = studyrooms?.find(o => o._id === item.studyroom);
+    console.log(item);
     return (
       <Reservation
         key={item._id}
@@ -45,6 +47,7 @@ const ReservationsScreen: ScreenComponentType<
       />
     );
   };
+  console.log(reservations);
   return (
     <View style={styles.wrapper}>
       <FlatList data={reservations} renderItem={renderItem} />
